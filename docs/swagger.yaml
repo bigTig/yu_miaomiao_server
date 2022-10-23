@@ -270,6 +270,35 @@ paths:
       summary: 生成验证码
       tags:
       - Base
+  /base/deleteAdvert/:id:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: ' '
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                ' msg':
+                  type: string
+                data:
+                  type: boolean
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 删除轮播图
+      tags:
+      - Base
   /base/insertAdvert:
     post:
       consumes:

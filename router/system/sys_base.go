@@ -17,6 +17,8 @@ func (s *BaseRouter) InitBaseRouter(Router *gin.RouterGroup) (R gin.IRouter) {
 		baseRouter.POST("captcha", baseApi.Captcha)
 		baseRouter.GET("advertList", baseApi.AdvertList)
 		baseRouter.POST("insertAdvert", baseApi.InsertAdvert)
+		baseRouter.PUT("updateAdvert", baseApi.UpdateAdvert)
+		baseRouter.DELETE("deleteAdvert/:id", baseApi.DeleteAdvert)
 	}
 
 	return baseRouter

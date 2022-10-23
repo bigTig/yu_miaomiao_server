@@ -32,7 +32,7 @@ func (b *BaseApi) AdvertList(c *gin.Context) {
 		return
 	}
 
-	list, total, err := AdvertService.AdvertList(pageInfo)
+	list, total, err := advertService.AdvertList(pageInfo)
 
 	if err != nil {
 		global.GvaLog.Error("获取失败!", zap.Error(err))
@@ -71,7 +71,7 @@ func (b *BaseApi) InsertAdvert(c *gin.Context) {
 		return
 	}
 
-	err = AdvertService.InsertAdvert(&adv)
+	err = advertService.InsertAdvert(&adv)
 	if err != nil {
 		global.GvaLog.Error("添加轮播图失败!", zap.Error(err))
 		response.FailWithBadRequest(err.Error(), c)
@@ -103,13 +103,40 @@ func (b *BaseApi) UpdateAdvert(c *gin.Context) {
 		return
 	}
 
-	err = AdvertService.UpdateAdvert(&adv)
+	err = advertService.UpdateAdvert(&adv)
 
 	if err != nil {
-		global.GvaLog.Error("更新轮播图失败!", zap.Error(err))
-		response.FailWithBadRequest(err.Error(), c)
+		global.GvaLog.Error("更新失败!", zap.Error(err))
+		response.FailWithInternalServerError("更新失败"+err.Error(), c)
 		return
 	}
 
 	response.OkWithMessage("更新轮播图成功", c)
+}
+
+// DeleteAdvert
+// @Tags      Base
+// @Summary   删除轮播图
+// @Security  ApiKeyAuth
+// @accept    application/json
+// @Produce   application/json
+// @Param     id  path string true  " "
+// @Success   200  {object}  response.Response{data=bool, msg=string} ""
+// @Router    /base/deleteAdvert/:id [delete]
+func (b *BaseApi) DeleteAdvert(c *gin.Context) {
+	id := c.Param("id")
+
+	if id == "" {
+		response.FailWithBadRequest("id 不能为空", c)
+		return
+	}
+	err := advertService.DeleteAdvert(id)
+
+	if err != nil {
+		global.GvaLog.Error("删除失败!", zap.Error(err))
+		response.FailWithInternalServerError("删除失败, "+err.Error(), c)
+		return
+	}
+
+	response.OkWithMessage("删除成功", c)
 }

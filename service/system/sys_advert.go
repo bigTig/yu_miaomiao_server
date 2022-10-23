@@ -7,6 +7,7 @@ import (
 	"yuyu/model/common/request"
 	"yuyu/model/system"
 	systemReq "yuyu/model/system/request"
+	"yuyu/utils"
 )
 
 type AdvertService struct{}
@@ -51,6 +52,9 @@ func (advertService *AdvertService) InsertAdvert(advert *systemReq.InsertAdvert)
 		Status:   advert.Status,
 		Position: advert.Position,
 	}
+	adv.UpdatedTime = utils.SetUpdatedTime()
+	adv.CreatedTime = utils.SetCreatedTime()
+
 	return global.GvaDb.Create(&adv).Error
 }
 
@@ -60,9 +64,41 @@ func (advertService *AdvertService) InsertAdvert(advert *systemReq.InsertAdvert)
 //@description: 更新轮播图
 //@param: advert *model.SysAdvert
 //@return: err error
-func (advertService *AdvertService) UpdateAdvert(advert *systemReq.UpdateAdvert) error {
+func (advertService *AdvertService) UpdateAdvert(advert *systemReq.UpdateAdvert) (err error) {
 	// 1. 根据id查找数据, 判断是否存在
-
+	err = global.GvaDb.Where("id = ?", advert.Id).First(&system.SysAdvert{}).Error
+	if err != nil {
+		return errors.New("当前id 不存在")
+	}
 	// 2. 更新数据库
-	return nil
+	adv := &system.SysAdvert{
+		Name:     advert.Name,
+		Action:   advert.Action,
+		Photo:    advert.Photo,
+		Type:     advert.Type,
+		Sort:     advert.Sort,
+		Status:   advert.Status,
+		Position: advert.Position,
+	}
+	adv.UpdatedTime = utils.SetUpdatedTime()
+
+	err = global.GvaDb.Where("id = ?", advert.Id).Updates(&adv).Error
+	return err
+}
+
+// DeleteAdvert
+//@author: kaifengli
+//@function: DeletedAdvert
+//@description: 删除轮播图
+//@param: id string
+//@return: err error
+func (advertService *AdvertService) DeleteAdvert(id string) (err error) {
+	// 1. 根据id查找数据, 判断是否存在
+	err = global.GvaDb.Where("id = ?", id).First(&system.SysAdvert{}).Error
+	if err != nil {
+		return errors.New("当前id 不存在")
+	}
+
+	err = global.GvaDb.Where("id = ?", id).Delete(&system.SysAdvert{}).Error
+	return err
 }

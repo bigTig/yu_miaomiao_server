@@ -5,7 +5,6 @@ import (
 	"fmt"
 	uuid "github.com/satori/go.uuid"
 	"gorm.io/gorm"
-	"time"
 	"yuyu/global"
 	"yuyu/model/system"
 	"yuyu/utils"
@@ -72,8 +71,8 @@ func (userService *UserService) Register(u *system.SysUser) (userInter *system.S
 	}
 	u.Password = utils.BcryptHash(u.Password)
 	u.UUID = uuid.NewV4()
-	u.CreatedTime = time.Now().Format("2006-01-02 15:04:05")
-	u.UpdatedTime = time.Now().Format("2006-01-02 15:04:05")
+	u.CreatedTime = utils.SetCreatedTime()
+	u.UpdatedTime = utils.SetUpdatedTime()
 	err = global.GvaDb.Create(&u).Error
 	return u, err
 }

@@ -10,5 +10,5 @@ type ApiGroup struct {
 var (
 	userService   = service.ServiceGroupApp.SystemServiceGroup.UserService
 	jwtService    = service.ServiceGroupApp.SystemServiceGroup.JwtService
-	AdvertService = service.ServiceGroupApp.SystemServiceGroup.AdvertService
+	advertService = service.ServiceGroupApp.SystemServiceGroup.AdvertService
 )
