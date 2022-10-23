@@ -19,7 +19,7 @@ import (
 // @Tags     Base
 // @Summary  用户登录
 // @Produce   application/json
-// @Param    data  body      systemReq.Login                                             true  "用户名, 密码, 验证码"
+// @Param    data  body systemReq.Login true  "用户名, 密码, 验证码"
 // @Success  200   {object}  response.Response{data=systemRes.LoginResponse,msg=string}  "返回包括用户信息,token,过期时间"
 // @Router   /base/login [post]
 func (b *BaseApi) Login(c *gin.Context) {
@@ -35,7 +35,7 @@ func (b *BaseApi) Login(c *gin.Context) {
 		return
 	}
 	if store.Verify(l.CaptchaId, l.Captcha, true) {
-		u := &system.SysUser{Mobile: l.Mobile, Password: l.Password}
+		u := &system.SysUser{Username: l.UserName, Password: l.Password}
 		user, err := userService.Login(u)
 		if err != nil {
 			global.GvaLog.Error("登录失败, 该用户不存在或者密码错误", zap.Error(err))
@@ -107,6 +107,7 @@ func (b *BaseApi) TokenNext(c *gin.Context, user system.SysUser) {
 		NickName: user.NickName,
 		Username: user.Username,
 		Openid:   user.Openid,
+		Mobile:   user.Mobile,
 	})
 
 	token, err := j.CreateToken(claims)
@@ -126,9 +127,9 @@ func (b *BaseApi) TokenNext(c *gin.Context, user system.SysUser) {
 	}
 
 	//从 redis 获取 jwtStr
-	if jwtStr, err := jwtService.GetRedisJWT(user.Openid); err == redis.Nil {
+	if jwtStr, err := jwtService.GetRedisJWT(user.Username); err == redis.Nil {
 		//redis 中没有时, 存储到redis
-		if err := jwtService.SetRedisJWT(token, user.Openid); err != nil {
+		if err := jwtService.SetRedisJWT(token, user.Username); err != nil {
 			global.GvaLog.Error("设置登录状态失败", zap.Error(err))
 			response.FailWithMessage("设置登录状态失败", c)
 			return
@@ -152,7 +153,7 @@ func (b *BaseApi) TokenNext(c *gin.Context, user system.SysUser) {
 			response.FailWithMessage("jwt 作废失败", c)
 			return
 		}
-		if err := jwtService.SetRedisJWT(token, user.Openid); err != nil {
+		if err := jwtService.SetRedisJWT(token, user.Username); err != nil {
 			response.FailWithMessage("设置登录状态失败", c)
 			return
 		}

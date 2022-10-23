@@ -15,6 +15,8 @@ func (s *BaseRouter) InitBaseRouter(Router *gin.RouterGroup) (R gin.IRouter) {
 		baseRouter.POST("login", baseApi.Login)
 		baseRouter.POST("wxLogin", baseApi.WxLogin)
 		baseRouter.POST("captcha", baseApi.Captcha)
+		baseRouter.GET("advertList", baseApi.AdvertList)
+		baseRouter.POST("insertAdvert", baseApi.InsertAdvert)
 	}
 
 	return baseRouter

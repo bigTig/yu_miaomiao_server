@@ -16,6 +16,60 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/base/advertList": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Base"
+                ],
+                "summary": "获取轮播图",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "allOf": [
+                                                {
+                                                    "$ref": "#/definitions/response.PageResult"
+                                                },
+                                                {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "list": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "$ref": "#/definitions/system.SysAdvert"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/base/captcha": {
             "post": {
                 "security": [
@@ -47,6 +101,56 @@ const docTemplate = `{
                                         "data": {
                                             "$ref": "#/definitions/response.SysCaptchaResponse"
                                         },
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/base/insertAdvert": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Base"
+                ],
+                "summary": "添加轮播图",
+                "parameters": [
+                    {
+                        "description": " ",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.InsertAdvert"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
                                         "msg": {
                                             "type": "string"
                                         }
@@ -103,6 +207,59 @@ const docTemplate = `{
                 }
             }
         },
+        "/base/updateAdvert": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Base"
+                ],
+                "summary": "更新轮播图",
+                "parameters": [
+                    {
+                        "description": " ",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.UpdateAdvert"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        " msg": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/base/wxLogin": {
             "post": {
                 "produces": [
@@ -147,9 +304,81 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/jwt/jsonInBlacklist": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Jwt"
+                ],
+                "summary": "jwt加入黑名单",
+                "responses": {
+                    "200": {
+                        "description": "jwt加入黑名单",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
+        "request.InsertAdvert": {
+            "type": "object",
+            "properties": {
+                "action": {
+                    "description": "链接值",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "广告名称",
+                    "type": "string"
+                },
+                "photo": {
+                    "description": "图片地址",
+                    "type": "string"
+                },
+                "position": {
+                    "description": "广告位置 1首页轮播;",
+                    "type": "integer"
+                },
+                "sort": {
+                    "description": "排序",
+                    "type": "integer"
+                },
+                "status": {
+                    "description": "状态",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "广告类型 product 产品 news 资讯 index 首页",
+                    "type": "string"
+                }
+            }
+        },
         "request.Login": {
             "type": "object",
             "properties": {
@@ -165,8 +394,45 @@ const docTemplate = `{
                     "description": "密码",
                     "type": "string"
                 },
-                "username": {
-                    "description": "手机号码",
+                "userName": {
+                    "description": "用户名-手机号码",
+                    "type": "string"
+                }
+            }
+        },
+        "request.UpdateAdvert": {
+            "type": "object",
+            "properties": {
+                "action": {
+                    "description": "链接值",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "id",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "广告名称",
+                    "type": "string"
+                },
+                "photo": {
+                    "description": "图片地址",
+                    "type": "string"
+                },
+                "position": {
+                    "description": "广告位置 1首页轮播;",
+                    "type": "integer"
+                },
+                "sort": {
+                    "description": "排序",
+                    "type": "integer"
+                },
+                "status": {
+                    "description": "状态",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "广告类型 product 产品 news 资讯 index 首页",
                     "type": "string"
                 }
             }
@@ -210,6 +476,21 @@ const docTemplate = `{
                 "user": {
                     "description": "用户信息",
                     "$ref": "#/definitions/system.SysUser"
+                }
+            }
+        },
+        "response.PageResult": {
+            "type": "object",
+            "properties": {
+                "list": {},
+                "page": {
+                    "type": "integer"
+                },
+                "pageSize": {
+                    "type": "integer"
+                },
+                "total": {
+                    "type": "integer"
                 }
             }
         },
@@ -260,6 +541,48 @@ const docTemplate = `{
                 }
             }
         },
+        "system.SysAdvert": {
+            "type": "object",
+            "properties": {
+                "action": {
+                    "type": "string"
+                },
+                "createdTime": {
+                    "description": "创建时间",
+                    "type": "string"
+                },
+                "deletedTime": {
+                    "description": "删除时间",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "主键ID",
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "photo": {
+                    "type": "string"
+                },
+                "position": {
+                    "type": "integer"
+                },
+                "sort": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "updatedTime": {
+                    "description": "更新时间",
+                    "type": "string"
+                }
+            }
+        },
         "system.SysUser": {
             "type": "object",
             "properties": {
@@ -279,6 +602,10 @@ const docTemplate = `{
                 },
                 "createdTime": {
                     "description": "创建时间",
+                    "type": "string"
+                },
+                "deletedTime": {
+                    "description": "删除时间",
                     "type": "string"
                 },
                 "district": {
@@ -313,7 +640,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "userName": {
-                    "description": "用户登录名",
+                    "description": "用户账号-用户登录名",
                     "type": "string"
                 },
                 "uuid": {

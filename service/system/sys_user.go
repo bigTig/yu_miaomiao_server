@@ -15,7 +15,6 @@ type UserService struct{}
 
 // Login
 //@author: kaifengli
-//@author: [SliverHorn](https://github.com/SliverHorn)
 //@function: Login
 //@description: 用户登录
 //@param: u *model.SysUser
@@ -26,7 +25,7 @@ func (userService *UserService) Login(u *system.SysUser) (userInter *system.SysU
 	}
 
 	var user system.SysUser
-	err = global.GvaDb.Where("mobile = ?", u.Mobile).First(&user).Error
+	err = global.GvaDb.Where("username = ?", u.Username).First(&user).Error
 	//查找到用户
 	if err == nil {
 		//有密码，判断密码是否正确
@@ -42,7 +41,6 @@ func (userService *UserService) Login(u *system.SysUser) (userInter *system.SysU
 
 // WxLogin
 //@author: kaifengli
-//@author: [SliverHorn](https://github.com/SliverHorn)
 //@function: Login
 //@description: 微信授权登录
 //@param: u *model.SysUser
@@ -63,7 +61,6 @@ func (userService *UserService) WxLogin(u *system.SysUser) (userInter *system.Sy
 
 // Register
 //@author: kaifengli
-//@author: [SliverHorn](https://github.com/SliverHorn)
 //@function: Register
 //@description: 用户注册
 //@param: u *model.SysUser

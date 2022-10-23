@@ -2,7 +2,7 @@ package request
 
 // Login User Login structure
 type Login struct {
-	Mobile    string `json:"mobile"`    // 手机号码
+	UserName  string `json:"userName"`  // 用户名-手机号码
 	Password  string `json:"password"`  // 密码
 	Captcha   string `json:"captcha"`   // 验证码
 	CaptchaId string `json:"captchaId"` // 验证码ID

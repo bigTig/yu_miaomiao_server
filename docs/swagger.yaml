@@ -1,4 +1,28 @@
 definitions:
+  request.InsertAdvert:
+    properties:
+      action:
+        description: 链接值
+        type: string
+      name:
+        description: 广告名称
+        type: string
+      photo:
+        description: 图片地址
+        type: string
+      position:
+        description: 广告位置 1首页轮播;
+        type: integer
+      sort:
+        description: 排序
+        type: integer
+      status:
+        description: 状态
+        type: string
+      type:
+        description: 广告类型 product 产品 news 资讯 index 首页
+        type: string
+    type: object
   request.Login:
     properties:
       captcha:
@@ -10,8 +34,35 @@ definitions:
       password:
         description: 密码
         type: string
-      username:
-        description: 手机号码
+      userName:
+        description: 用户名-手机号码
+        type: string
+    type: object
+  request.UpdateAdvert:
+    properties:
+      action:
+        description: 链接值
+        type: string
+      id:
+        description: id
+        type: string
+      name:
+        description: 广告名称
+        type: string
+      photo:
+        description: 图片地址
+        type: string
+      position:
+        description: 广告位置 1首页轮播;
+        type: integer
+      sort:
+        description: 排序
+        type: integer
+      status:
+        description: 状态
+        type: string
+      type:
+        description: 广告类型 product 产品 news 资讯 index 首页
         type: string
     type: object
   request.WxLogin:
@@ -43,6 +94,16 @@ definitions:
       user:
         $ref: '#/definitions/system.SysUser'
         description: 用户信息
+    type: object
+  response.PageResult:
+    properties:
+      list: {}
+      page:
+        type: integer
+      pageSize:
+        type: integer
+      total:
+        type: integer
     type: object
   response.Response:
     properties:
@@ -76,6 +137,35 @@ definitions:
         $ref: '#/definitions/system.SysUser'
         description: 用户信息
     type: object
+  system.SysAdvert:
+    properties:
+      action:
+        type: string
+      createdTime:
+        description: 创建时间
+        type: string
+      deletedTime:
+        description: 删除时间
+        type: string
+      id:
+        description: 主键ID
+        type: integer
+      name:
+        type: string
+      photo:
+        type: string
+      position:
+        type: integer
+      sort:
+        type: integer
+      status:
+        type: string
+      type:
+        type: string
+      updatedTime:
+        description: 更新时间
+        type: string
+    type: object
   system.SysUser:
     properties:
       Mobile:
@@ -90,6 +180,9 @@ definitions:
         type: string
       createdTime:
         description: 创建时间
+        type: string
+      deletedTime:
+        description: 删除时间
         type: string
       district:
         type: string
@@ -114,7 +207,7 @@ definitions:
         description: 更新时间
         type: string
       userName:
-        description: 用户登录名
+        description: 用户账号-用户登录名
         type: string
       uuid:
         description: 用户UUID
@@ -126,6 +219,34 @@ info:
   title: Swagger Example API
   version: 0.0.1
 paths:
+  /base/advertList:
+    post:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  allOf:
+                  - $ref: '#/definitions/response.PageResult'
+                  - properties:
+                      list:
+                        items:
+                          $ref: '#/definitions/system.SysAdvert'
+                        type: array
+                    type: object
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 获取轮播图
+      tags:
+      - Base
   /base/captcha:
     post:
       consumes:
@@ -147,6 +268,34 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: 生成验证码
+      tags:
+      - Base
+  /base/insertAdvert:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: ' '
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/request.InsertAdvert'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 添加轮播图
       tags:
       - Base
   /base/login:
@@ -175,6 +324,36 @@ paths:
       summary: 用户登录
       tags:
       - Base
+  /base/updateAdvert:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: ' '
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/request.UpdateAdvert'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                ' msg':
+                  type: string
+                data:
+                  type: boolean
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 更新轮播图
+      tags:
+      - Base
   /base/wxLogin:
     post:
       parameters:
@@ -201,6 +380,27 @@ paths:
       summary: 授权登录
       tags:
       - Base
+  /jwt/jsonInBlacklist:
+    post:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: jwt加入黑名单
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: jwt加入黑名单
+      tags:
+      - Jwt
 securityDefinitions:
   ApiKeyAuth:
     in: header

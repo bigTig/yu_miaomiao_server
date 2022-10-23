@@ -6,6 +6,7 @@ import (
 	"github.com/swaggo/gin-swagger"
 	_ "yuyu/docs"
 	"yuyu/global"
+	"yuyu/middleware"
 	"yuyu/router"
 )
 
@@ -23,6 +24,12 @@ func Routers() *gin.Engine {
 
 	{
 		systemRouter.InitBaseRouter(PublicGroup) // 注册基础功能路由 不做鉴权
+	}
+
+	PrivateGroup := Router.Group("")
+	PrivateGroup.Use(middleware.JWTAuth())
+	{
+		systemRouter.InitJwtRouter(PrivateGroup) // jwt 相关路由
 	}
 
 	global.GvaLog.Info("router register success")

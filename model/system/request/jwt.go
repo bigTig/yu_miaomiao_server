@@ -17,4 +17,5 @@ type BaseClaims struct {
 	Username string
 	NickName string
 	Openid   string
+	Mobile   string
 }

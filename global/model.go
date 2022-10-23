@@ -7,10 +7,10 @@ import (
 )
 
 type GvaModel struct {
-	ID          uint       `json:"id" gorm:"primarykey;comment:主键ID"`                         // 主键ID
-	CreatedTime string     `json:"created_time" gorm:"column:created_time"`                   // 创建时间
-	UpdatedTime string     `json:"updated_time" gorm:"column:updated_time"`                   // 更新时间
-	DeletedTime *LocalTime `json:"deleted_time" sql:"index" gorm:"column:deleted_time;index"` // 删除时间
+	ID          uint   `json:"id" gorm:"primarykey;comment:主键ID"` // 主键ID
+	CreatedTime string `json:"createdTime"`                       // 创建时间
+	UpdatedTime string `json:"updatedTime"`                       // 更新时间
+	DeletedTime string `json:"deletedTime" sql:"index"`           // 删除时间
 }
 
 type LocalTime struct {

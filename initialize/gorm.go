@@ -27,6 +27,8 @@ func RegisterTables(db *gorm.DB) {
 	err := db.AutoMigrate(
 		// 系统模块表
 		system.SysUser{},
+		system.JwtBlacklist{},
+		system.SysAdvert{},
 
 		// 示例模块表
 
