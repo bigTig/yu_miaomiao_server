@@ -13,5 +13,6 @@ func (u *UserRouter) InitUserRouter(Router *gin.RouterGroup) {
 
 	{
 		userRouter.PUT("setUserInfo", baseApi.SetUserInfo) // 设置用户信息
+		userRouter.GET("getUserInfo", baseApi.GetUserInfo) // 获取用户信息
 	}
 }

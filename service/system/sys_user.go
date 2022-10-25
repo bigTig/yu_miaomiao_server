@@ -80,7 +80,7 @@ func (userService *UserService) Register(u *system.SysUser) (userInter *system.S
 
 // SetUserInfo
 //@author: kaifengli
-//@function: Register
+//@function: SetUserInfo
 //@description: 设置用户信息
 //@param: u *systemReq.ChangeUserInfo
 //@return:  err error
@@ -107,4 +107,22 @@ func (userService *UserService) SetUserInfo(userInfo *systemReq.ChangeUserInfo) 
 	user.Avatar = userInfo.Avatar
 
 	return global.GvaDb.Where("id = ?", userInfo.ID).Updates(&user).Error
+}
+
+// GetUserInfo
+//@author: kaifengli
+//@function: GetUserInfo
+//@description: 获取用户信息
+//@param: uuid uuid.UUID
+//@return: err error, userInter *model.SysUser
+func (userService *UserService) GetUserInfo(uuid uuid.UUID) (userInfo *system.SysUser, err error) {
+	var user system.SysUser
+
+	err = global.GvaDb.Where("uuid = ?", uuid).First(&user).Error
+	if err != nil {
+		global.GvaLog.Error("该用户不存在")
+		return userInfo, errors.New("该用户不存在")
+	}
+
+	return &user, err
 }

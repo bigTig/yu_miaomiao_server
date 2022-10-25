@@ -88,6 +88,27 @@ func (b *BaseApi) SetUserInfo(c *gin.Context) {
 	response.OkWithMessage("设置成功", c)
 }
 
+// GetUserInfo
+// @Tags      SysUser
+// @Summary   获取用户信息
+// @Security  ApiKeyAuth
+// @accept    application/json
+// @Produce   application/json
+// @Success   200   {object}  response.Response{data=system.SysUser,msg=string}  "获取用户信息"
+// @Router    /user/getUserInfo [get]
+func (b *BaseApi) GetUserInfo(c *gin.Context) {
+	uuid := utils.GetUserUuid(c)
+	ReqUser, err := userService.GetUserInfo(uuid)
+
+	if err != nil {
+		global.GvaLog.Error("获取失败!", zap.Error(err))
+		response.FailWithInternalServerError("获取失败", c)
+		return
+	}
+
+	response.OkWithDetailed(ReqUser, "获取成功", c)
+}
+
 // WxLogin
 // @Tags     Base
 // @Summary  授权登录
