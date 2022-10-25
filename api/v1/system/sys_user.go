@@ -183,7 +183,7 @@ func (b *BaseApi) TokenNext(c *gin.Context, user system.SysUser) {
 		var blackJWT system.JwtBlacklist
 		blackJWT.Jwt = jwtStr
 
-		if err := jwtService.JsonInBlacklist(blackJWT); err != nil {
+		if err := jwtService.JsonInBlacklist(&blackJWT); err != nil {
 			response.FailWithMessage("jwt 作废失败", c)
 			return
 		}
