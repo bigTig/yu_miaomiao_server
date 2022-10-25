@@ -34,6 +34,12 @@ type WxPhoneDto struct {
 	CountryCode     string `json:"countryCode"`
 }
 
+type ChangePasswordReq struct {
+	ID              uint   `json:"-"`               // 从 JWT 中提取 user id，避免越权
+	Password        string `json:"password"`        // 旧密码
+	ConfirmPassword string `json:"confirmPassword"` // 新密码
+}
+
 type ChangeUserInfo struct {
 	ID       uint      `gorm:"primarykey"`
 	UUID     uuid.UUID `json:"uuid" gorm:"index;comment:用户UUID"`          // 用户UUID

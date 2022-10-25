@@ -55,7 +55,7 @@ func (b *BaseApi) Login(c *gin.Context) {
 }
 
 // Logout
-// @Tags     Base
+// @Tags     SysUser
 // @Summary  退出登录
 // @Produce   application/json
 // @Success  200   {object}  response.Response{data=bool,msg=string}  "返回包括用户信息,token,过期时间"
@@ -63,8 +63,6 @@ func (b *BaseApi) Login(c *gin.Context) {
 func (b *BaseApi) Logout(c *gin.Context) {
 	token := c.Request.Header.Get("x-token")
 	jwt := system.JwtBlacklist{Jwt: token}
-	jwt.CreatedTime = utils.SetCreatedTime()
-	jwt.UpdatedTime = utils.SetUpdatedTime()
 
 	err := userService.Logout(&jwt)
 	if err != nil {
@@ -73,6 +71,47 @@ func (b *BaseApi) Logout(c *gin.Context) {
 		return
 	}
 	response.OkWithMessage("退出登录成功", c)
+}
+
+// ChangePassword
+// @Tags      SysUser
+// @Summary   用户修改密码
+// @Security  ApiKeyAuth
+// @Produce  application/json
+// @Param     data  body      systemReq.ChangePasswordReq    true  "用户名, 原密码, 新密码"
+// @Success   200   {object}  response.Response{data=bool,msg=string}  "用户修改密码"
+// @Router    /user/changePassword [post]
+func (b *BaseApi) ChangePassword(c *gin.Context) {
+	var req systemReq.ChangePasswordReq
+	err := c.ShouldBindJSON(&req)
+	if err != nil {
+		response.FailWithBadRequest(err.Error()+" 参数json 格式", c)
+		return
+	}
+	err = utils.Verify(req, utils.ChangePasswordVerify)
+	if err != nil {
+		response.FailWithBadRequest(err.Error(), c)
+		return
+	}
+	uid := utils.GetUserID(c)
+	u := &system.SysUser{GvaModel: global.GvaModel{ID: uid}, Password: req.Password}
+	_, err = userService.ChangePassword(u, req.ConfirmPassword)
+	if err != nil {
+		global.GvaLog.Error("修改失败!", zap.Error(err))
+		response.FailWithInternalServerError("修改失败，原密码与当前账户不符", c)
+		return
+	}
+
+	token := c.Request.Header.Get("x-token")
+	jwt := system.JwtBlacklist{Jwt: token}
+	err = jwtService.JsonInBlacklist(&jwt)
+	if err != nil {
+		global.GvaLog.Error("token 加入黑名单失败!", zap.Error(err))
+		response.FailWithInternalServerError("token 加入黑名单失败", c)
+		return
+	}
+
+	response.OkWithMessage("修改成功", c)
 }
 
 // SetUserInfo

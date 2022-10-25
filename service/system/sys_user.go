@@ -57,6 +57,25 @@ func (userService *UserService) Logout(jwtList *system.JwtBlacklist) (err error)
 	return nil
 }
 
+// ChangePassword
+//@author: kaifengli
+//@function: ChangePassword
+//@description: 修改用户密码
+//@param: u *model.SysUser, confirmPassword string
+//@return: userInter *model.SysUser,err error
+func (userService *UserService) ChangePassword(u *system.SysUser, confirmPassword string) (userInter *system.SysUser, err error) {
+	var user system.SysUser
+	if err = global.GvaDb.Where("id = ?", u.ID).First(&user).Error; err != nil {
+		return nil, err
+	}
+	if ok := utils.BcryptCheck(u.Password, user.Password); !ok {
+		return nil, errors.New("原密码错误")
+	}
+	user.Password = utils.BcryptHash(confirmPassword)
+	err = global.GvaDb.Save(&user).Error
+	return &user, err
+}
+
 // WxLogin
 //@author: kaifengli
 //@function: Login
