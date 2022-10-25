@@ -82,6 +82,18 @@ definitions:
         description: 用户名-手机号码
         type: string
     type: object
+  request.PageInfo:
+    properties:
+      keyword:
+        description: 关键字
+        type: string
+      page:
+        description: 页码
+        type: integer
+      pageSize:
+        description: 每页大小
+        type: integer
+    type: object
   request.UpdateAdvert:
     properties:
       action:
@@ -210,6 +222,37 @@ definitions:
         description: 更新时间
         type: string
     type: object
+  system.SysCategory:
+    properties:
+      content:
+        type: string
+      createdTime:
+        description: 创建时间
+        type: string
+      deletedTime:
+        description: 删除时间
+        type: string
+      icon:
+        type: string
+      id:
+        description: 主键ID
+        type: integer
+      name:
+        type: string
+      pid:
+        type: integer
+      remarks:
+        type: string
+      sort:
+        type: integer
+      status:
+        type: string
+      thumbnail:
+        type: string
+      updatedTime:
+        description: 更新时间
+        type: string
+    type: object
   system.SysUser:
     properties:
       Mobile:
@@ -270,6 +313,13 @@ paths:
     post:
       consumes:
       - application/json
+      parameters:
+      - description: 页码, 每页大小
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/request.PageInfo'
       produces:
       - application/json
       responses:
@@ -315,6 +365,41 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: 生成验证码
+      tags:
+      - Base
+  /base/categoryList:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 页码, 每页大小
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/request.PageInfo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  allOf:
+                  - $ref: '#/definitions/response.PageResult'
+                  - properties:
+                      list:
+                        items:
+                          $ref: '#/definitions/system.SysCategory'
+                        type: array
+                    type: object
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 获取分类列表数据
       tags:
       - Base
   /base/deleteAdvert/:id:

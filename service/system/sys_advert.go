@@ -16,7 +16,7 @@ type AdvertService struct{}
 //@author: kaifengli
 //@function: AdvertList
 //@description: 获取轮播图列表
-//@param: u *model.SysAdvert
+//@param: info request.PageInfo
 //@return: err error, userInter *model.SysAdvert
 func (advertService *AdvertService) AdvertList(info request.PageInfo) (list interface{}, total int64, err error) {
 

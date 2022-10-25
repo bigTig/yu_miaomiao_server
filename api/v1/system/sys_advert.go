@@ -16,7 +16,7 @@ import (
 // @Security  ApiKeyAuth
 // @accept    application/json
 // @Produce   application/json
-// @params data body request.PageInfo true  "页码, 每页大小"
+// @param data body request.PageInfo true  "页码, 每页大小"
 // @Success   200  {object}  response.Response{data=response.PageResult{list=[]system.SysAdvert,}} ""
 // @Router    /base/advertList [post]
 func (b *BaseApi) AdvertList(c *gin.Context) {
