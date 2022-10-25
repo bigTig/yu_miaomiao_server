@@ -6,7 +6,6 @@ import (
 	"yuyu/global"
 	"yuyu/model/common/response"
 	"yuyu/model/system"
-	"yuyu/utils"
 )
 
 type JwtApi struct{}
@@ -22,8 +21,6 @@ type JwtApi struct{}
 func (j *JwtApi) JsonInBlacklist(c *gin.Context) {
 	token := c.Request.Header.Get("x-token")
 	jwt := system.JwtBlacklist{Jwt: token}
-	jwt.CreatedTime = utils.SetCreatedTime()
-	jwt.UpdatedTime = utils.SetUpdatedTime()
 
 	err := jwtService.JsonInBlacklist(&jwt)
 	if err != nil {

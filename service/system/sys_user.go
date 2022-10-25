@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	uuid "github.com/satori/go.uuid"
+	"go.uber.org/zap"
 	"gorm.io/gorm"
 	"yuyu/global"
 	"yuyu/model/system"
@@ -30,6 +31,7 @@ func (userService *UserService) Login(u *system.SysUser) (userInter *system.SysU
 	if err == nil {
 		//有密码，判断密码是否正确
 		if ok := utils.BcryptCheck(u.Password, user.Password); !ok {
+			global.GvaLog.Error("密码错误")
 			return nil, errors.New("密码错误")
 		}
 
@@ -37,6 +39,22 @@ func (userService *UserService) Login(u *system.SysUser) (userInter *system.SysU
 	}
 	// 还未注册
 	return userService.Register(u)
+}
+
+// Logout
+//@author: kaifengli
+//@function: Logout
+//@description: 退出登录
+//@param: jwtList model.JwtBlacklist
+//@return:  err error
+func (userService *UserService) Logout(jwtList *system.JwtBlacklist) (err error) {
+	err = global.GvaDb.Create(&jwtList).Error
+	if err != nil {
+		global.GvaLog.Error("密码错误", zap.Error(err))
+		return err
+	}
+
+	return nil
 }
 
 // WxLogin

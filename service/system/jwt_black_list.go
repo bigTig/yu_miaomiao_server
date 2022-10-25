@@ -19,6 +19,8 @@ type JwtService struct{}
 //@param: jwtList model.JwtBlacklist
 //@return: err error
 func (jwtService *JwtService) JsonInBlacklist(jwtList *system.JwtBlacklist) (err error) {
+	jwtList.CreatedTime = utils.SetCreatedTime()
+	jwtList.UpdatedTime = utils.SetUpdatedTime()
 	err = global.GvaDb.Create(&jwtList).Error
 	if err != nil {
 		return

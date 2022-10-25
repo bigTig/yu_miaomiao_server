@@ -54,6 +54,27 @@ func (b *BaseApi) Login(c *gin.Context) {
 	response.FailWithInternalServerError("验证码错误", c)
 }
 
+// Logout
+// @Tags     Base
+// @Summary  退出登录
+// @Produce   application/json
+// @Success  200   {object}  response.Response{data=bool,msg=string}  "返回包括用户信息,token,过期时间"
+// @Router   /user/logout [post]
+func (b *BaseApi) Logout(c *gin.Context) {
+	token := c.Request.Header.Get("x-token")
+	jwt := system.JwtBlacklist{Jwt: token}
+	jwt.CreatedTime = utils.SetCreatedTime()
+	jwt.UpdatedTime = utils.SetUpdatedTime()
+
+	err := userService.Logout(&jwt)
+	if err != nil {
+		global.GvaLog.Error("退出登录失败", zap.Error(err))
+		response.FailWithMessage("退出登录失败!", c)
+		return
+	}
+	response.OkWithMessage("退出登录成功", c)
+}
+
 // SetUserInfo
 // @Tags      SysUser
 // @Summary   设置用户信息

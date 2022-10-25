@@ -16,7 +16,7 @@ var (
 	TokenExpired     = errors.New("token已过期")
 	TokenNotValidYet = errors.New("token已失效")
 	TokenMalformed   = errors.New("token有误")
-	TokenInvalid     = errors.New("无法处理该token")
+	TokenInvalid     = errors.New("该token不存在")
 )
 
 func NewJWT() *JWT {

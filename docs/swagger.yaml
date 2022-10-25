@@ -491,6 +491,25 @@ paths:
       summary: 获取用户信息
       tags:
       - SysUser
+  /user/logout:
+    post:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 返回包括用户信息,token,过期时间
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  type: boolean
+                msg:
+                  type: string
+              type: object
+      summary: 退出登录
+      tags:
+      - Base
   /user/setUserInfo:
     put:
       consumes:

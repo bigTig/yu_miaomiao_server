@@ -25,15 +25,15 @@ func JWTAuth() gin.HandlerFunc {
 			c.Abort()
 			return
 		}
-		j := utils.NewJWT()
-		// parseToken 解析token包含的信息
-		claims, err := j.ParseToken(token)
-
 		if jwtService.IsBlacklist(token) {
 			response.FailWithUnauthorized("您的帐户异地登陆或令牌失效", c)
 			c.Abort()
 			return
 		}
+
+		j := utils.NewJWT()
+		// parseToken 解析token包含的信息
+		claims, err := j.ParseToken(token)
 
 		if err != nil {
 			if err == utils.TokenExpired {
