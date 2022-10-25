@@ -394,9 +394,112 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/user/setUserInfo": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "SysUser"
+                ],
+                "summary": "设置用户信息",
+                "parameters": [
+                    {
+                        "description": "ID, 用户名, 昵称, 头像链接",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.ChangeUserInfo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "设置用户信息",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "boolean"
+                                        },
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
+        "request.ChangeUserInfo": {
+            "type": "object",
+            "properties": {
+                "Mobile": {
+                    "description": "用户手机号",
+                    "type": "string"
+                },
+                "avatar": {
+                    "description": "用户头像",
+                    "type": "string"
+                },
+                "city": {
+                    "type": "string"
+                },
+                "country": {
+                    "type": "string"
+                },
+                "district": {
+                    "type": "string"
+                },
+                "enable": {
+                    "description": "用户是否被冻结 1正常 2冻结",
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "description": "真实姓名",
+                    "type": "string"
+                },
+                "nickName": {
+                    "description": "用户昵称",
+                    "type": "string"
+                },
+                "points": {
+                    "type": "number"
+                },
+                "province": {
+                    "type": "string"
+                },
+                "sex": {
+                    "type": "string"
+                },
+                "uuid": {
+                    "description": "用户UUID",
+                    "type": "string"
+                }
+            }
+        },
         "request.InsertAdvert": {
             "type": "object",
             "properties": {
@@ -669,6 +772,10 @@ const docTemplate = `{
                 "id": {
                     "description": "主键ID",
                     "type": "integer"
+                },
+                "name": {
+                    "description": "真实姓名",
+                    "type": "string"
                 },
                 "nickName": {
                     "description": "用户昵称",

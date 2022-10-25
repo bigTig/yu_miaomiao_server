@@ -29,7 +29,8 @@ func Routers() *gin.Engine {
 	PrivateGroup := Router.Group("")
 	PrivateGroup.Use(middleware.JWTAuth())
 	{
-		systemRouter.InitJwtRouter(PrivateGroup) // jwt 相关路由
+		systemRouter.InitJwtRouter(PrivateGroup)  // jwt 相关路由
+		systemRouter.InitUserRouter(PrivateGroup) // 注册用户路由
 	}
 
 	global.GvaLog.Info("router register success")

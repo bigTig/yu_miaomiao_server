@@ -54,6 +54,40 @@ func (b *BaseApi) Login(c *gin.Context) {
 	response.FailWithInternalServerError("验证码错误", c)
 }
 
+// SetUserInfo
+// @Tags      SysUser
+// @Summary   设置用户信息
+// @Security  ApiKeyAuth
+// @accept    application/json
+// @Produce   application/json
+// @Param     data  body systemReq.ChangeUserInfo true  "ID, 用户名, 昵称, 头像链接"
+// @Success   200   {object}  response.Response{data=bool,msg=string}  "设置用户信息"
+// @Router    /user/setUserInfo [put]
+func (b *BaseApi) SetUserInfo(c *gin.Context) {
+	var user systemReq.ChangeUserInfo
+	err := c.ShouldBindJSON(&user)
+	if err != nil {
+		global.GvaLog.Error(err.Error()+"json格式", zap.Error(err))
+		response.FailWithBadRequest(err.Error()+"json格式", c)
+		return
+	}
+	err = utils.Verify(user, utils.IdVerify)
+	if err != nil {
+		global.GvaLog.Error(err.Error(), zap.Error(err))
+		response.FailWithBadRequest(err.Error(), c)
+		return
+	}
+
+	err = userService.SetUserInfo(&user)
+
+	if err != nil {
+		global.GvaLog.Error(err.Error()+"用户信息更新失败", zap.Error(err))
+		response.FailWithInternalServerError(err.Error(), c)
+		return
+	}
+	response.OkWithMessage("设置成功", c)
+}
+
 // WxLogin
 // @Tags     Base
 // @Summary  授权登录

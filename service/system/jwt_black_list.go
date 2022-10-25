@@ -18,7 +18,7 @@ type JwtService struct{}
 //@description: 拉黑jwt
 //@param: jwtList model.JwtBlacklist
 //@return: err error
-func (jwtService *JwtService) JsonInBlacklist(jwtList system.JwtBlacklist) (err error) {
+func (jwtService *JwtService) JsonInBlacklist(jwtList *system.JwtBlacklist) (err error) {
 	err = global.GvaDb.Create(&jwtList).Error
 	if err != nil {
 		return

@@ -7,6 +7,7 @@ import (
 	"gorm.io/gorm"
 	"yuyu/global"
 	"yuyu/model/system"
+	systemReq "yuyu/model/system/request"
 	"yuyu/utils"
 )
 
@@ -75,4 +76,35 @@ func (userService *UserService) Register(u *system.SysUser) (userInter *system.S
 	u.UpdatedTime = utils.SetUpdatedTime()
 	err = global.GvaDb.Create(&u).Error
 	return u, err
+}
+
+// SetUserInfo
+//@author: kaifengli
+//@function: Register
+//@description: 设置用户信息
+//@param: u *systemReq.ChangeUserInfo
+//@return:  err error
+func (userService *UserService) SetUserInfo(userInfo *systemReq.ChangeUserInfo) (err error) {
+	var user system.SysUser
+
+	err = global.GvaDb.Where("uuid = ?", userInfo.UUID).First(&user).Error
+	if err != nil {
+		global.GvaLog.Error("该用户不存在")
+		return errors.New("该用户不存在")
+	}
+
+	user.ID = userInfo.ID
+	user.UUID = userInfo.UUID
+	user.Name = userInfo.Name
+	user.UpdatedTime = utils.SetUpdatedTime()
+	user.Mobile = userInfo.Mobile
+	user.NickName = userInfo.NickName
+	user.Country = userInfo.Country
+	user.Province = userInfo.Province
+	user.City = userInfo.City
+	user.District = userInfo.District
+	user.Sex = userInfo.Sex
+	user.Avatar = userInfo.Avatar
+
+	return global.GvaDb.Where("id = ?", userInfo.ID).Updates(&user).Error
 }

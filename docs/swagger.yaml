@@ -1,4 +1,39 @@
 definitions:
+  request.ChangeUserInfo:
+    properties:
+      Mobile:
+        description: 用户手机号
+        type: string
+      avatar:
+        description: 用户头像
+        type: string
+      city:
+        type: string
+      country:
+        type: string
+      district:
+        type: string
+      enable:
+        description: 用户是否被冻结 1正常 2冻结
+        type: integer
+      id:
+        type: integer
+      name:
+        description: 真实姓名
+        type: string
+      nickName:
+        description: 用户昵称
+        type: string
+      points:
+        type: number
+      province:
+        type: string
+      sex:
+        type: string
+      uuid:
+        description: 用户UUID
+        type: string
+    type: object
   request.InsertAdvert:
     properties:
       action:
@@ -192,6 +227,9 @@ definitions:
       id:
         description: 主键ID
         type: integer
+      name:
+        description: 真实姓名
+        type: string
       nickName:
         description: 用户昵称
         type: string
@@ -430,6 +468,36 @@ paths:
       summary: jwt加入黑名单
       tags:
       - Jwt
+  /user/setUserInfo:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: ID, 用户名, 昵称, 头像链接
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/request.ChangeUserInfo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 设置用户信息
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  type: boolean
+                msg:
+                  type: string
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 设置用户信息
+      tags:
+      - SysUser
 securityDefinitions:
   ApiKeyAuth:
     in: header

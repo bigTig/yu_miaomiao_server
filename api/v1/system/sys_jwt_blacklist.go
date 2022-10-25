@@ -6,6 +6,7 @@ import (
 	"yuyu/global"
 	"yuyu/model/common/response"
 	"yuyu/model/system"
+	"yuyu/utils"
 )
 
 type JwtApi struct{}
@@ -21,7 +22,10 @@ type JwtApi struct{}
 func (j *JwtApi) JsonInBlacklist(c *gin.Context) {
 	token := c.Request.Header.Get("x-token")
 	jwt := system.JwtBlacklist{Jwt: token}
-	err := jwtService.JsonInBlacklist(jwt)
+	jwt.CreatedTime = utils.SetCreatedTime()
+	jwt.UpdatedTime = utils.SetUpdatedTime()
+
+	err := jwtService.JsonInBlacklist(&jwt)
 	if err != nil {
 		global.GvaLog.Error("jwt 作废失败!", zap.Error(err))
 		response.FailWithMessage("jwt 作废失败!", c)
