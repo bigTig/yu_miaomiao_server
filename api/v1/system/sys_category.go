@@ -6,6 +6,7 @@ import (
 	"yuyu/global"
 	"yuyu/model/common/request"
 	"yuyu/model/common/response"
+	systemReq "yuyu/model/system/request"
 	"yuyu/utils"
 )
 
@@ -45,4 +46,38 @@ func (b *BaseApi) CategoryList(c *gin.Context) {
 		Page:     pageInfo.Page,
 		PageSize: pageInfo.PageSize,
 	}, "类目获取成功", c)
+}
+
+// InsertCategory
+// @Tags      Base
+// @Summary   添加类目
+// @Security  ApiKeyAuth
+// @accept    application/json
+// @Produce   application/json
+// @Param     data  body      systemReq.InsertCateReq true  " "
+// @Success   200  {object}  response.Response{msg=string} ""
+// @Router    /base/insertCategory [post]
+func (b *BaseApi) InsertCategory(c *gin.Context) {
+	var cate systemReq.InsertCateReq
+	err := c.ShouldBindJSON(&cate)
+	if err != nil {
+		global.GvaLog.Error(err.Error() + " 参数json格式")
+		response.FailWithBadRequest(err.Error()+" 参数json格式", c)
+		return
+	}
+	err = utils.Verify(cate, utils.InsertCateVerify)
+	if err != nil {
+		global.GvaLog.Error(err.Error())
+		response.FailWithBadRequest(err.Error(), c)
+		return
+	}
+
+	err = categoryService.InsertCategory(&cate)
+	if err != nil {
+		global.GvaLog.Error("添加类目失败失败!", zap.Error(err))
+		response.FailWithBadRequest(err.Error()+" 添加类目失败失败", c)
+		return
+	}
+
+	response.OkWithMessage("添加类目成功", c)
 }
