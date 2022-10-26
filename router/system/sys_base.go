@@ -21,6 +21,8 @@ func (s *BaseRouter) InitBaseRouter(Router *gin.RouterGroup) (R gin.IRouter) {
 		baseRouter.DELETE("deleteAdvert/:id", baseApi.DeleteAdvert)
 		baseRouter.POST("categoryList", baseApi.CategoryList)
 		baseRouter.POST("insertCategory", baseApi.InsertCategory)
+		baseRouter.PUT("updateCategory", baseApi.UpdateCategory)
+		baseRouter.DELETE("deleteCategory/:id", baseApi.DeleteCategory)
 	}
 
 	return baseRouter

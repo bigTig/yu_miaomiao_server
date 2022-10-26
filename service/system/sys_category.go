@@ -87,3 +87,26 @@ func (category *CategoryService) UpdateCategory(cateReq *systemReq.UpdateCateReq
 	err = global.GvaDb.Where("id = ?", cateReq.Id).Updates(&cate).Error
 	return err
 }
+
+// DeleteCategory
+//@author: kaifengli
+//@function: DeleteCategory
+//@description: 删除类目
+//@param: id uint
+//@return: err error
+func (category *CategoryService) DeleteCategory(id string) (err error) {
+	// 1. 根据id查找数据, 判断是否存在
+	err = global.GvaDb.Where("id = ?", id).First(&system.SysCategory{}).Error
+	if err != nil {
+		return errors.New("当前id 不存在")
+	}
+
+	err = global.GvaDb.Where("id = ?", id).UpdateColumns(&system.SysCategory{
+		Status: "UNABLE",
+		GvaModel: global.GvaModel{
+			UpdatedTime: utils.SetUpdatedTime(),
+		},
+	}).Error
+
+	return err
+}

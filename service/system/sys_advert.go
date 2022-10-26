@@ -99,6 +99,11 @@ func (advertService *AdvertService) DeleteAdvert(id string) (err error) {
 		return errors.New("当前id 不存在")
 	}
 
-	err = global.GvaDb.Where("id = ?", id).Delete(&system.SysAdvert{}).Error
+	err = global.GvaDb.Where("id = ?", id).UpdateColumns(&system.SysAdvert{
+		Status: "UNABLE",
+		GvaModel: global.GvaModel{
+			UpdatedTime: utils.SetUpdatedTime(),
+		},
+	}).Error
 	return err
 }

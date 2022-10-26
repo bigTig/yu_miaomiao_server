@@ -115,3 +115,31 @@ func (b *BaseApi) UpdateCategory(c *gin.Context) {
 
 	response.OkWithMessage("更新类目成功", c)
 }
+
+// DeleteCategory
+// @Tags      Base
+// @Summary   删除类目
+// @Security  ApiKeyAuth
+// @accept    application/json
+// @Produce   application/json
+// @Param     id  path string true  " "
+// @Success   200  {object}  response.Response{data=bool, msg=string} ""
+// @Router    /base/deleteCategory/:id [delete]
+func (b *BaseApi) DeleteCategory(c *gin.Context) {
+	id := c.Param("id")
+
+	if id == "" {
+		global.GvaLog.Error("id 不能为空")
+		response.FailWithBadRequest("id 不能为空", c)
+		return
+	}
+	err := categoryService.DeleteCategory(id)
+
+	if err != nil {
+		global.GvaLog.Error("删除失败!", zap.Error(err))
+		response.FailWithInternalServerError("删除失败, "+err.Error(), c)
+		return
+	}
+
+	response.OkWithMessage("删除成功", c)
+}
