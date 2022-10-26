@@ -58,3 +58,32 @@ func (category *CategoryService) InsertCategory(cate *systemReq.InsertCateReq) (
 
 	return global.GvaDb.Create(&cateParams).Error
 }
+
+// UpdateCategory
+//@author: kaifengli
+//@function: InsertAdvert
+//@description: 更新类目
+//@param: cateReq *systemReq.UpdateCateReq
+//@return: err error
+func (category *CategoryService) UpdateCategory(cateReq *systemReq.UpdateCateReq) (err error) {
+	// 1. 根据id查找数据, 判断是否存在
+	err = global.GvaDb.Where("id = ?", cateReq.Id).First(&system.SysCategory{}).Error
+	if err != nil {
+		return errors.New("当前id 不存在")
+	}
+	// 2. 更新数据库
+	cate := &system.SysCategory{
+		Name:      cateReq.Name,
+		Pid:       cateReq.Pid,
+		Icon:      cateReq.Icon,
+		Content:   cateReq.Content,
+		Thumbnail: cateReq.Thumbnail,
+		Sort:      cateReq.Sort,
+		Status:    cateReq.Status,
+		Remarks:   cateReq.Remarks,
+	}
+	cate.UpdatedTime = utils.SetUpdatedTime()
+
+	err = global.GvaDb.Where("id = ?", cateReq.Id).Updates(&cate).Error
+	return err
+}

@@ -81,3 +81,37 @@ func (b *BaseApi) InsertCategory(c *gin.Context) {
 
 	response.OkWithMessage("添加类目成功", c)
 }
+
+// UpdateCategory
+// @Tags      Base
+// @Summary   更新类目
+// @Security  ApiKeyAuth
+// @accept    application/json
+// @Produce   application/json
+// @Param     data  body      systemReq.UpdateCateReq true  " "
+// @Success   200  {object}  response.Response{data=bool, msg=string} ""
+// @Router    /base/updateCategory [put]
+func (b *BaseApi) UpdateCategory(c *gin.Context) {
+	var cate systemReq.UpdateCateReq
+	err := c.ShouldBindJSON(&cate)
+	if err != nil {
+		global.GvaLog.Error(err.Error() + "参数json格式")
+		response.FailWithBadRequest("参数json格式", c)
+		return
+	}
+	err = utils.Verify(cate, utils.UpdateCateVerify)
+	if err != nil {
+		response.FailWithBadRequest(err.Error(), c)
+		return
+	}
+
+	err = categoryService.UpdateCategory(&cate)
+
+	if err != nil {
+		global.GvaLog.Error("更新失败!", zap.Error(err))
+		response.FailWithInternalServerError("更新失败"+err.Error(), c)
+		return
+	}
+
+	response.OkWithMessage("更新类目成功", c)
+}

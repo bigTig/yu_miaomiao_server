@@ -8,5 +8,6 @@ var (
 	ChangePasswordVerify = Rules{"Password": {NotEmpty()}, "ConfirmPassword": {NotEmpty()}}
 	WxLoginVerify        = Rules{"Code": {NotEmpty()}, "Iv": {NotEmpty()}, "AppId": {NotEmpty()}, "EncryptedData": {NotEmpty()}}
 	InsertCateVerify     = Rules{"Name": {NotEmpty()}, "Icon": {NotEmpty()}, "Content": {NotEmpty()}, "Sort": {NotEmpty()}, "Status": {NotEmpty()}, "Remarks": {NotEmpty()}}
+	UpdateCateVerify     = Rules{"Id": {NotEmpty()}, "Name": {NotEmpty()}, "Icon": {NotEmpty()}, "Content": {NotEmpty()}, "Sort": {NotEmpty()}, "Status": {NotEmpty()}, "Remarks": {NotEmpty()}}
 	PageInfoVerify       = Rules{"Page": {NotEmpty()}, "PageSize": {NotEmpty()}}
 )
