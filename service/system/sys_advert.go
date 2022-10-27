@@ -17,7 +17,7 @@ type AdvertService struct{}
 //@function: AdvertList
 //@description: 获取轮播图列表
 //@param: info request.PageInfo
-//@return: err error, userInter *model.SysAdvert
+//@return: list interface{}, total int64, err error
 func (advertService *AdvertService) AdvertList(info request.PageInfo) (list interface{}, total int64, err error) {
 
 	limit := info.PageSize

@@ -5,4 +5,5 @@ type ServiceGroup struct {
 	JwtService
 	AdvertService
 	CategoryService
+	BrandService
 }

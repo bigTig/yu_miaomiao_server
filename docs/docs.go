@@ -81,6 +81,71 @@ const docTemplate = `{
                 }
             }
         },
+        "/base/brandtList": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Base"
+                ],
+                "summary": "获取品牌列表",
+                "parameters": [
+                    {
+                        "description": "页码, 每页大小",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.PageInfo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "allOf": [
+                                                {
+                                                    "$ref": "#/definitions/response.PageResult"
+                                                },
+                                                {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "list": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "$ref": "#/definitions/system.SysAdvert"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/base/captcha": {
             "post": {
                 "security": [
@@ -239,6 +304,57 @@ const docTemplate = `{
                 }
             }
         },
+        "/base/deleteBrand/:id": {
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Base"
+                ],
+                "summary": "删除品牌",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": " ",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        " msg": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/base/deleteCategory/:id": {
             "delete": {
                 "security": [
@@ -315,6 +431,56 @@ const docTemplate = `{
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/request.InsertAdvert"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/base/insertBrand": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Base"
+                ],
+                "summary": "添加品牌",
+                "parameters": [
+                    {
+                        "description": " ",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.InsertBrandReq"
                         }
                     }
                 ],
@@ -460,6 +626,59 @@ const docTemplate = `{
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/request.UpdateAdvert"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        " msg": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/base/updateBrand": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Base"
+                ],
+                "summary": "更新品牌",
+                "parameters": [
+                    {
+                        "description": " ",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.UpdateBrandReq"
                         }
                     }
                 ],
@@ -902,6 +1121,43 @@ const docTemplate = `{
                 }
             }
         },
+        "request.InsertBrandReq": {
+            "type": "object",
+            "properties": {
+                "brandPrice": {
+                    "description": "起始价格",
+                    "type": "integer"
+                },
+                "cateId": {
+                    "description": "类目id",
+                    "type": "integer"
+                },
+                "icon": {
+                    "description": "图标地址",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "品牌名称",
+                    "type": "string"
+                },
+                "shopId": {
+                    "description": "商铺id",
+                    "type": "integer"
+                },
+                "sort": {
+                    "description": "排序",
+                    "type": "integer"
+                },
+                "status": {
+                    "description": "状态 ENABLE 上架 UNABLE 下架",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "是否推荐",
+                    "type": "integer"
+                }
+            }
+        },
         "request.InsertCateReq": {
             "type": "object",
             "properties": {
@@ -978,7 +1234,7 @@ const docTemplate = `{
                 },
                 "id": {
                     "description": "id",
-                    "type": "string"
+                    "type": "integer"
                 },
                 "name": {
                     "description": "广告名称",
@@ -1003,6 +1259,47 @@ const docTemplate = `{
                 "type": {
                     "description": "广告类型 product 产品 news 资讯 index 首页",
                     "type": "string"
+                }
+            }
+        },
+        "request.UpdateBrandReq": {
+            "type": "object",
+            "properties": {
+                "brandPrice": {
+                    "description": "起始价格",
+                    "type": "integer"
+                },
+                "cateId": {
+                    "description": "类目id",
+                    "type": "integer"
+                },
+                "icon": {
+                    "description": "图标地址",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "id",
+                    "type": "integer"
+                },
+                "name": {
+                    "description": "品牌名称",
+                    "type": "string"
+                },
+                "shopId": {
+                    "description": "商铺id",
+                    "type": "integer"
+                },
+                "sort": {
+                    "description": "排序",
+                    "type": "integer"
+                },
+                "status": {
+                    "description": "状态 ENABLE 上架 UNABLE 下架",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "是否推荐",
+                    "type": "integer"
                 }
             }
         },

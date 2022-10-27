@@ -11,7 +11,7 @@ type InsertAdvert struct {
 }
 
 type UpdateAdvert struct {
-	Id       string `json:"id"`       // id
+	Id       uint   `json:"id"`       // id
 	Name     string `json:"name"`     // 广告名称
 	Photo    string `json:"photo"`    // 图片地址
 	Sort     int    `json:"sort"`     // 排序

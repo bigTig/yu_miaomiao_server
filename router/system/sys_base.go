@@ -16,14 +16,30 @@ func (s *BaseRouter) InitBaseRouter(Router *gin.RouterGroup) (R gin.IRouter) {
 		baseRouter.POST("wxLogin", baseApi.WxLogin)
 		baseRouter.POST("captcha", baseApi.Captcha)
 		baseRouter.POST("advertList", baseApi.AdvertList)
-		baseRouter.POST("insertAdvert", baseApi.InsertAdvert)
-		baseRouter.PUT("updateAdvert", baseApi.UpdateAdvert)
-		baseRouter.DELETE("deleteAdvert/:id", baseApi.DeleteAdvert)
 		baseRouter.POST("categoryList", baseApi.CategoryList)
-		baseRouter.POST("insertCategory", baseApi.InsertCategory)
-		baseRouter.PUT("updateCategory", baseApi.UpdateCategory)
-		baseRouter.DELETE("deleteCategory/:id", baseApi.DeleteCategory)
+		baseRouter.POST("brandList", baseApi.BrandList)
 	}
 
 	return baseRouter
+}
+
+// InitBaseAuthRouter
+// 初始化需要权限的基础接口
+func (s *BaseRouter) InitBaseAuthRouter(Router *gin.RouterGroup) (R gin.IRouter) {
+	baseAuthRouter := Router.Group("base")
+	baseApi := v1.ApiGroupApp.SystemApiGroup.BaseApi
+
+	{
+		baseAuthRouter.POST("insertAdvert", baseApi.InsertAdvert)
+		baseAuthRouter.PUT("updateAdvert", baseApi.UpdateAdvert)
+		baseAuthRouter.DELETE("deleteAdvert/:id", baseApi.DeleteAdvert)
+		baseAuthRouter.POST("insertCategory", baseApi.InsertCategory)
+		baseAuthRouter.PUT("updateCategory", baseApi.UpdateCategory)
+		baseAuthRouter.DELETE("deleteCategory/:id", baseApi.DeleteCategory)
+		baseAuthRouter.POST("insertBrand", baseApi.InsertBrand)
+		baseAuthRouter.PUT("updateBrand", baseApi.UpdateBrand)
+		baseAuthRouter.DELETE("deleteBrand/:id", baseApi.DeleteBrand)
+	}
+
+	return baseAuthRouter
 }
