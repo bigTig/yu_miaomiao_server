@@ -6,4 +6,5 @@ type ServiceGroup struct {
 	AdvertService
 	CategoryService
 	BrandService
+	HealthNewsService
 }

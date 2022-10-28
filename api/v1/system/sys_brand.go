@@ -17,7 +17,7 @@ import (
 // @accept    application/json
 // @Produce   application/json
 // @param data body request.PageInfo true  "页码, 每页大小"
-// @Success   200  {object}  response.Response{data=response.PageResult{list=[]system.SysAdvert,}} ""
+// @Success   200  {object}  response.Response{data=response.PageResult{list=[]system.SysBrand,}} ""
 // @Router    /base/brandtList [post]
 func (b *BaseApi) BrandList(c *gin.Context) {
 	var pageInfo request.PageInfo

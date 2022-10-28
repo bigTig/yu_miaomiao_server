@@ -35,7 +35,10 @@ func RunWindowsServer() {
 
 	fmt.Printf(`
 	欢迎使用 yu-miaomiao-server
-	当前版本:v1.0.0
+	   ____    __
+	  / __/___/ /  ___
+	 / _// __/ _ \/ _ \
+	/___/\__/_//_/\___/ 当前版本:v1.0.0
 	默认自动化文档地址:http://127.0.0.1%s/swagger/index.html
 	`, address)
 

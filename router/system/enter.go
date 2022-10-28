@@ -4,4 +4,5 @@ type RouterGroup struct {
 	BaseRouter
 	UserRouter
 	JwtRouter
+	HealthNewsRouter
 }
