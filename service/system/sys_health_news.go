@@ -42,7 +42,6 @@ func (healthNews *HealthNewsService) InsertHealthNew(req *systemReq.InsertHealth
 		return errors.New("存在重复title，请修改title")
 	}
 	health := &system.SysHealthNews{
-		Sort:    req.Sort,
 		Status:  req.Status,
 		Author:  req.Author,
 		Content: req.Content,
@@ -67,9 +66,11 @@ func (healthNews *HealthNewsService) UpdateHealthNew(req *systemReq.UpdateHealth
 	if err != nil {
 		return errors.New("当前id 不存在")
 	}
+	if !errors.Is(global.GvaDb.Where("title = ?", req.Title).First(&system.SysHealthNews{}).Error, gorm.ErrRecordNotFound) {
+		return errors.New("存在重复title，请修改title")
+	}
 	// 2. 更新数据库
 	health := &system.SysHealthNews{
-		Sort:    req.Sort,
 		Status:  req.Status,
 		Author:  req.Author,
 		Content: req.Content,

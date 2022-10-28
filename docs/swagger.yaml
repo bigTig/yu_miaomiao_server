@@ -113,6 +113,15 @@ definitions:
       thumbnail:
         type: string
     type: object
+  request.InsertFastCateReq:
+    properties:
+      name:
+        description: 分类名称
+        type: string
+      status:
+        description: 状态：ENABLE 启用 UNABLE 禁用
+        type: string
+    type: object
   request.InsertHealthNewReq:
     properties:
       author:
@@ -121,8 +130,6 @@ definitions:
         type: string
       cover:
         type: string
-      sort:
-        type: integer
       status:
         type: string
       title:
@@ -234,6 +241,17 @@ definitions:
       thumbnail:
         type: string
     type: object
+  request.UpdateFastCateReq:
+    properties:
+      id:
+        type: integer
+      name:
+        description: 分类名称
+        type: string
+      status:
+        description: 状态：ENABLE 启用 UNABLE 禁用
+        type: string
+    type: object
   request.UpdateHealthNewReq:
     properties:
       author:
@@ -244,8 +262,6 @@ definitions:
         type: string
       id:
         description: id
-        type: integer
-      sort:
         type: integer
       status:
         type: string
@@ -434,8 +450,6 @@ definitions:
         type: integer
       pv:
         type: integer
-      sort:
-        type: integer
       status:
         type: string
       title:
@@ -500,35 +514,6 @@ info:
   title: Swagger Example API
   version: 0.0.1
 paths:
-  /base/HealthNewDetail:
-    get:
-      consumes:
-      - application/json
-      parameters:
-      - description: ' '
-        in: query
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/response.Response'
-            - properties:
-                ' msg':
-                  type: string
-                data:
-                  $ref: '#/definitions/system.SysHealthNews'
-              type: object
-      security:
-      - ApiKeyAuth: []
-      summary: 获取新闻资讯详情
-      tags:
-      - Health
   /base/advertList:
     post:
       consumes:
@@ -744,35 +729,6 @@ paths:
       summary: 删除类目
       tags:
       - Base
-  /base/deleteHealthNew/:id:
-    delete:
-      consumes:
-      - application/json
-      parameters:
-      - description: ' '
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/response.Response'
-            - properties:
-                ' msg':
-                  type: string
-                data:
-                  type: boolean
-              type: object
-      security:
-      - ApiKeyAuth: []
-      summary: 删除新闻
-      tags:
-      - Health
   /base/insertAdvert:
     post:
       consumes:
@@ -857,34 +813,6 @@ paths:
       summary: 添加类目
       tags:
       - Base
-  /base/insertHealthNew:
-    post:
-      consumes:
-      - application/json
-      parameters:
-      - description: ' '
-        in: body
-        name: data
-        required: true
-        schema:
-          $ref: '#/definitions/request.InsertHealthNewReq'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/response.Response'
-            - properties:
-                msg:
-                  type: string
-              type: object
-      security:
-      - ApiKeyAuth: []
-      summary: 添加新闻资讯
-      tags:
-      - Health
   /base/login:
     post:
       parameters:
@@ -1001,36 +929,6 @@ paths:
       summary: 更新类目
       tags:
       - Base
-  /base/updateHealthNew:
-    put:
-      consumes:
-      - application/json
-      parameters:
-      - description: ' '
-        in: body
-        name: data
-        required: true
-        schema:
-          $ref: '#/definitions/request.UpdateHealthNewReq'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/response.Response'
-            - properties:
-                ' msg':
-                  type: string
-                data:
-                  type: boolean
-              type: object
-      security:
-      - ApiKeyAuth: []
-      summary: 更新新闻资讯
-      tags:
-      - Health
   /base/wxLogin:
     post:
       parameters:
@@ -1057,6 +955,179 @@ paths:
       summary: 授权登录
       tags:
       - Base
+  /fast/deleteFastCate/:id:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: ' '
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                ' msg':
+                  type: string
+                data:
+                  type: boolean
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 删除禁食分类
+      tags:
+      - Fast
+  /fast/fastCateList:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  allOf:
+                  - $ref: '#/definitions/response.PageResult'
+                  - properties:
+                      list:
+                        items:
+                          $ref: '#/definitions/system.SysHealthNews'
+                        type: array
+                    type: object
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 获取禁食分类列表
+      tags:
+      - Fast
+  /fast/insertFastCate:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: ' '
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/request.InsertFastCateReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 添加禁食分类
+      tags:
+      - Fast
+  /fast/updateFastCate:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: ' '
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/request.UpdateFastCateReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                ' msg':
+                  type: string
+                data:
+                  type: boolean
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 更新禁食分类
+      tags:
+      - Fast
+  /health/HealthNewDetail:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: ' '
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                ' msg':
+                  type: string
+                data:
+                  $ref: '#/definitions/system.SysHealthNews'
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 获取新闻资讯详情
+      tags:
+      - Health
+  /health/deleteHealthNew/:id:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: ' '
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                ' msg':
+                  type: string
+                data:
+                  type: boolean
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 删除新闻
+      tags:
+      - Health
   /health/healthNewsList:
     post:
       consumes:
@@ -1090,6 +1161,64 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: 获取新闻资讯列表
+      tags:
+      - Health
+  /health/insertHealthNew:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: ' '
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/request.InsertHealthNewReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 添加新闻资讯
+      tags:
+      - Health
+  /health/updateHealthNew:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: ' '
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/request.UpdateHealthNewReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                ' msg':
+                  type: string
+                data:
+                  type: boolean
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 更新新闻资讯
       tags:
       - Health
   /jwt/jsonInBlacklist:

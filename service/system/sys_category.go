@@ -71,6 +71,9 @@ func (category *CategoryService) UpdateCategory(cateReq *systemReq.UpdateCateReq
 	if err != nil {
 		return errors.New("当前id 不存在")
 	}
+	if !errors.Is(global.GvaDb.Where("name = ?", cateReq.Name).First(&system.SysCategory{}).Error, gorm.ErrRecordNotFound) {
+		return errors.New("存在重复name，请修改name")
+	}
 	// 2. 更新数据库
 	cate := &system.SysCategory{
 		Name:      cateReq.Name,

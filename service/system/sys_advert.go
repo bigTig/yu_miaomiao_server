@@ -70,6 +70,10 @@ func (advertService *AdvertService) UpdateAdvert(advert *systemReq.UpdateAdvert)
 	if err != nil {
 		return errors.New("当前id 不存在")
 	}
+
+	if !errors.Is(global.GvaDb.Where("name = ?", advert.Name).First(&system.SysAdvert{}).Error, gorm.ErrRecordNotFound) {
+		return errors.New("存在重复name，请修改name")
+	}
 	// 2. 更新数据库
 	adv := &system.SysAdvert{
 		Name:     advert.Name,

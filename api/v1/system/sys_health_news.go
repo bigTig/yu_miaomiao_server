@@ -60,7 +60,7 @@ func (h *HealthNewsApi) HealthNewsList(c *gin.Context) {
 // @Produce   application/json
 // @Param     data  body      systemReq.InsertHealthNewReq true  " "
 // @Success   200  {object}  response.Response{msg=string} ""
-// @Router    /base/insertHealthNew [post]
+// @Router    /health/insertHealthNew [post]
 func (h *HealthNewsApi) InsertHealthNew(c *gin.Context) {
 	var health systemReq.InsertHealthNewReq
 	err := c.ShouldBindJSON(&health)
@@ -92,7 +92,7 @@ func (h *HealthNewsApi) InsertHealthNew(c *gin.Context) {
 // @Produce   application/json
 // @Param     data  body      systemReq.UpdateHealthNewReq true  " "
 // @Success   200  {object}  response.Response{data=bool, msg=string} ""
-// @Router    /base/updateHealthNew [put]
+// @Router    /health/updateHealthNew [put]
 func (h *HealthNewsApi) UpdateHealthNew(c *gin.Context) {
 	var health systemReq.UpdateHealthNewReq
 	err := c.ShouldBindJSON(&health)
@@ -125,7 +125,7 @@ func (h *HealthNewsApi) UpdateHealthNew(c *gin.Context) {
 // @Produce   application/json
 // @Param     id  path string true  " "
 // @Success   200  {object}  response.Response{data=bool, msg=string} ""
-// @Router    /base/deleteHealthNew/:id [delete]
+// @Router    /health/deleteHealthNew/:id [delete]
 func (h *HealthNewsApi) DeleteHealthNew(c *gin.Context) {
 	id := c.Param("id")
 
@@ -152,7 +152,7 @@ func (h *HealthNewsApi) DeleteHealthNew(c *gin.Context) {
 // @Produce   application/json
 // @Param     id  query string true  " "
 // @Success   200  {object}  response.Response{data=system.SysHealthNews, msg=string} ""
-// @Router    /base/HealthNewDetail [get]
+// @Router    /health/HealthNewDetail [get]
 func (h *HealthNewsApi) HealthNewDetail(c *gin.Context) {
 	id := c.Query("id")
 	if id == "" {

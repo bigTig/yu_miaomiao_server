@@ -7,4 +7,5 @@ type ServiceGroup struct {
 	CategoryService
 	BrandService
 	HealthNewsService
+	FastCateService
 }

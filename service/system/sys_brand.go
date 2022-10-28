@@ -69,6 +69,10 @@ func (b *BrandService) UpdateBrand(req *systemReq.UpdateBrandReq) (err error) {
 	if err != nil {
 		return errors.New("当前id 不存在")
 	}
+
+	if !errors.Is(global.GvaDb.Where("name = ?", req.Name).First(&system.SysBrand{}).Error, gorm.ErrRecordNotFound) {
+		return errors.New("存在重复name，请修改name")
+	}
 	// 2. 更新数据库
 	brand := &system.SysBrand{
 		Name:       req.Name,

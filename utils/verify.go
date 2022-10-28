@@ -11,7 +11,9 @@ var (
 	UpdateCateVerify      = Rules{"Id": {NotEmpty()}, "Name": {NotEmpty()}, "Icon": {NotEmpty()}, "Content": {NotEmpty()}, "Sort": {Ge("0")}, "Status": {NotEmpty()}, "Remarks": {NotEmpty()}}
 	InsertBrandVerify     = Rules{"Name": {NotEmpty()}, "Icon": {NotEmpty()}, "CateId": {Ge("0")}, "ShopId": {Ge("0")}, "BrandPrice": {Ge("0")}, "Sort": {Ge("0")}, "Status": {NotEmpty()}}
 	UpdateBrandVerify     = Rules{"Id": {NotEmpty()}, "Name": {NotEmpty()}, "Icon": {NotEmpty()}, "CateId": {Ge("0")}, "ShopId": {Ge("0")}, "BrandPrice": {Ge("0")}, "Sort": {Ge("0")}, "Status": {NotEmpty()}}
-	InsertHealthNewVerify = Rules{"Title": {NotEmpty()}, "Author": {NotEmpty()}, "Sort": {Ge("0")}, "Status": {NotEmpty()}, "Cover": {NotEmpty()}, "Content": {NotEmpty()}}
-	UpdateHealthNewVerify = Rules{"Id": {NotEmpty()}, "Title": {NotEmpty()}, "Author": {NotEmpty()}, "Sort": {Ge("0")}, "Status": {NotEmpty()}, "Cover": {NotEmpty()}, "Content": {NotEmpty()}}
+	InsertHealthNewVerify = Rules{"Title": {NotEmpty()}, "Author": {NotEmpty()}, "Status": {NotEmpty()}, "Cover": {NotEmpty()}, "Content": {NotEmpty()}}
+	UpdateHealthNewVerify = Rules{"Id": {NotEmpty()}, "Title": {NotEmpty()}, "Author": {NotEmpty()}, "Status": {NotEmpty()}, "Cover": {NotEmpty()}, "Content": {NotEmpty()}}
+	InsertFastCateVerify  = Rules{"Name": {NotEmpty()}, "Status": {NotEmpty()}}
+	UpdateFastCateVerify  = Rules{"Id": {NotEmpty()}, "Name": {NotEmpty()}, "Status": {NotEmpty()}}
 	PageInfoVerify        = Rules{"Page": {NotEmpty()}, "PageSize": {NotEmpty()}}
 )

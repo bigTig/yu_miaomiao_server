@@ -7,7 +7,7 @@ import (
 
 type HealthNewsRouter struct{}
 
-func (h *HealthNewsRouter) InitHealthNewsRouter(Router *gin.RouterGroup) {
+func (h *HealthNewsRouter) InitHealthNewsRouter(Router *gin.RouterGroup) (R gin.IRouter) {
 	healthNewsRouter := Router.Group("health")
 	healthNewsApi := v1.ApiGroupApp.SystemApiGroup.HealthNewsApi
 	{
@@ -17,4 +17,6 @@ func (h *HealthNewsRouter) InitHealthNewsRouter(Router *gin.RouterGroup) {
 		healthNewsRouter.DELETE("deleteHealthNew", healthNewsApi.DeleteHealthNew) // 删除新闻资讯
 		healthNewsRouter.GET("healthNewDetail", healthNewsApi.HealthNewDetail)    // 获取新闻资讯详情
 	}
+
+	return healthNewsRouter
 }

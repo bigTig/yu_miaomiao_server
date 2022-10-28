@@ -129,6 +129,9 @@ func (userService *UserService) SetUserInfo(userInfo *systemReq.ChangeUserInfo) 
 		global.GvaLog.Error("该用户不存在")
 		return errors.New("该用户不存在")
 	}
+	if !errors.Is(global.GvaDb.Where("name = ?", userInfo.Name).First(&system.SysUser{}).Error, gorm.ErrRecordNotFound) {
+		return errors.New("存在重复name，请修改name")
+	}
 
 	user.ID = userInfo.ID
 	user.UUID = userInfo.UUID
