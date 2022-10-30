@@ -2,7 +2,7 @@
 
 # jwt configuration
 jwt:
-  signing-key: 'qmPlus'
+  signing-key: 'qmPlusKaifengLi'
   expires-time: 604800
   buffer-time: 86400
   issuer: 'qmPlus'
@@ -10,7 +10,7 @@ jwt:
 # zap logger configuration
 zap:
   level: 'info'
-  prefix: 'yumiaomiao'
+  prefix: 'yu_miamiao_service'
   format: 'console'
   director: 'log'
   encode-level: 'LowercaseColorLevelEncoder'
@@ -50,7 +50,7 @@ mysql:
   path: '175.178.11.10'
   port: '3306'
   config: 'parseTime=True&loc=Local'
-  db-name: 'yu_miaomiao_server'
+  db-name: 'yu_miaomiao'
   username: 'root'
   password: 'yumiaomiao'
   max-idle-conns: 10
