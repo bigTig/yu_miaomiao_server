@@ -15,5 +15,8 @@ var (
 	UpdateHealthNewVerify = Rules{"Id": {NotEmpty()}, "Title": {NotEmpty()}, "Author": {NotEmpty()}, "Status": {NotEmpty()}, "Cover": {NotEmpty()}, "Content": {NotEmpty()}}
 	InsertFastCateVerify  = Rules{"Name": {NotEmpty()}, "Status": {NotEmpty()}}
 	UpdateFastCateVerify  = Rules{"Id": {NotEmpty()}, "Name": {NotEmpty()}, "Status": {NotEmpty()}}
+	FastListVerify        = Rules{"Page": {NotEmpty()}, "PageSize": {NotEmpty()}, "CateId": {Ge("0")}, "CarDog": {Ge("0")}}
+	InsertFastVerify      = Rules{"Name": {NotEmpty()}, "Status": {NotEmpty()}, "CateId": {Ge("0")}, "CarDog": {Ge("0")}, "CanEat": {Ge("0")}, "Content": {NotEmpty()}, "Icon": {NotEmpty()}}
+	UpdateFastVerify      = Rules{"Id": {NotEmpty()}, "Name": {NotEmpty()}, "Status": {NotEmpty()}, "CateId": {Ge("0")}, "CarDog": {Ge("0")}, "CanEat": {Ge("0")}, "Content": {NotEmpty()}, "Icon": {NotEmpty()}}
 	PageInfoVerify        = Rules{"Page": {NotEmpty()}, "PageSize": {NotEmpty()}}
 )

@@ -805,6 +805,57 @@ const docTemplate = `{
                 }
             }
         },
+        "/fast/deleteFast/:id": {
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Fast"
+                ],
+                "summary": "删除禁食",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": " ",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        " msg": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/fast/deleteFastCate/:id": {
             "delete": {
                 "security": [
@@ -895,12 +946,116 @@ const docTemplate = `{
                                                         "list": {
                                                             "type": "array",
                                                             "items": {
-                                                                "$ref": "#/definitions/system.SysHealthNews"
+                                                                "$ref": "#/definitions/system.SysFastCate"
                                                             }
                                                         }
                                                     }
                                                 }
                                             ]
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/fast/fastList": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Fast"
+                ],
+                "summary": "获取禁食列表",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "allOf": [
+                                                {
+                                                    "$ref": "#/definitions/response.PageResult"
+                                                },
+                                                {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "list": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "$ref": "#/definitions/system.SysFast"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/fast/insertFast": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Fast"
+                ],
+                "summary": "添加禁食",
+                "parameters": [
+                    {
+                        "description": " ",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.InsertFastReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
                                         }
                                     }
                                 }
@@ -951,6 +1106,59 @@ const docTemplate = `{
                                     "properties": {
                                         "msg": {
                                             "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/fast/updateFast": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Fast"
+                ],
+                "summary": "更新禁食",
+                "parameters": [
+                    {
+                        "description": " ",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.UpdateFastReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        " msg": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "boolean"
                                         }
                                     }
                                 }
@@ -1678,6 +1886,36 @@ const docTemplate = `{
                 }
             }
         },
+        "request.InsertFastReq": {
+            "type": "object",
+            "properties": {
+                "canEat": {
+                    "description": "程度 0 禁食 1 慎食 2 可食",
+                    "type": "integer"
+                },
+                "carDog": {
+                    "description": "所属 0 猫 1 狗 2 两者",
+                    "type": "integer"
+                },
+                "cateId": {
+                    "type": "integer"
+                },
+                "content": {
+                    "type": "string"
+                },
+                "icon": {
+                    "type": "string"
+                },
+                "name": {
+                    "description": "分类名称",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "状态：ENABLE 启用 UNABLE 禁用",
+                    "type": "string"
+                }
+            }
+        },
         "request.InsertHealthNewReq": {
             "type": "object",
             "properties": {
@@ -1850,6 +2088,39 @@ const docTemplate = `{
         "request.UpdateFastCateReq": {
             "type": "object",
             "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "description": "分类名称",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "状态：ENABLE 启用 UNABLE 禁用",
+                    "type": "string"
+                }
+            }
+        },
+        "request.UpdateFastReq": {
+            "type": "object",
+            "properties": {
+                "canEat": {
+                    "description": "程度 0 禁食 1 慎食 2 可食",
+                    "type": "integer"
+                },
+                "carDog": {
+                    "description": "所属 0 猫 1 狗 2 两者",
+                    "type": "integer"
+                },
+                "cateId": {
+                    "type": "integer"
+                },
+                "content": {
+                    "type": "string"
+                },
+                "icon": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "integer"
                 },
@@ -2115,6 +2386,75 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "thumbnail": {
+                    "type": "string"
+                },
+                "updatedTime": {
+                    "description": "更新时间",
+                    "type": "string"
+                }
+            }
+        },
+        "system.SysFast": {
+            "type": "object",
+            "properties": {
+                "canEat": {
+                    "type": "integer"
+                },
+                "carDog": {
+                    "type": "integer"
+                },
+                "cateId": {
+                    "type": "integer"
+                },
+                "content": {
+                    "type": "string"
+                },
+                "createdTime": {
+                    "description": "创建时间",
+                    "type": "string"
+                },
+                "deletedTime": {
+                    "description": "删除时间",
+                    "type": "string"
+                },
+                "icon": {
+                    "type": "string"
+                },
+                "id": {
+                    "description": "主键ID",
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "updatedTime": {
+                    "description": "更新时间",
+                    "type": "string"
+                }
+            }
+        },
+        "system.SysFastCate": {
+            "type": "object",
+            "properties": {
+                "createdTime": {
+                    "description": "创建时间",
+                    "type": "string"
+                },
+                "deletedTime": {
+                    "description": "删除时间",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "主键ID",
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "status": {
                     "type": "string"
                 },
                 "updatedTime": {

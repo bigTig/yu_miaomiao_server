@@ -32,6 +32,7 @@ func RegisterTables(db *gorm.DB) {
 		system.SysCategory{},   // 商品分类表
 		system.SysBrand{},      // 品牌表
 		system.SysHealthNews{}, // 新闻资讯表
+		system.SysFast{},       // 禁食水果表
 		system.SysFastCate{},   // 禁食分类表
 
 		// 自动化模块表

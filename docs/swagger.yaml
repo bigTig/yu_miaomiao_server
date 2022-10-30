@@ -122,6 +122,27 @@ definitions:
         description: 状态：ENABLE 启用 UNABLE 禁用
         type: string
     type: object
+  request.InsertFastReq:
+    properties:
+      canEat:
+        description: 程度 0 禁食 1 慎食 2 可食
+        type: integer
+      carDog:
+        description: 所属 0 猫 1 狗 2 两者
+        type: integer
+      cateId:
+        type: integer
+      content:
+        type: string
+      icon:
+        type: string
+      name:
+        description: 分类名称
+        type: string
+      status:
+        description: 状态：ENABLE 启用 UNABLE 禁用
+        type: string
+    type: object
   request.InsertHealthNewReq:
     properties:
       author:
@@ -243,6 +264,29 @@ definitions:
     type: object
   request.UpdateFastCateReq:
     properties:
+      id:
+        type: integer
+      name:
+        description: 分类名称
+        type: string
+      status:
+        description: 状态：ENABLE 启用 UNABLE 禁用
+        type: string
+    type: object
+  request.UpdateFastReq:
+    properties:
+      canEat:
+        description: 程度 0 禁食 1 慎食 2 可食
+        type: integer
+      carDog:
+        description: 所属 0 猫 1 狗 2 两者
+        type: integer
+      cateId:
+        type: integer
+      content:
+        type: string
+      icon:
+        type: string
       id:
         type: integer
       name:
@@ -426,6 +470,54 @@ definitions:
       status:
         type: string
       thumbnail:
+        type: string
+      updatedTime:
+        description: 更新时间
+        type: string
+    type: object
+  system.SysFast:
+    properties:
+      canEat:
+        type: integer
+      carDog:
+        type: integer
+      cateId:
+        type: integer
+      content:
+        type: string
+      createdTime:
+        description: 创建时间
+        type: string
+      deletedTime:
+        description: 删除时间
+        type: string
+      icon:
+        type: string
+      id:
+        description: 主键ID
+        type: integer
+      name:
+        type: string
+      status:
+        type: string
+      updatedTime:
+        description: 更新时间
+        type: string
+    type: object
+  system.SysFastCate:
+    properties:
+      createdTime:
+        description: 创建时间
+        type: string
+      deletedTime:
+        description: 删除时间
+        type: string
+      id:
+        description: 主键ID
+        type: integer
+      name:
+        type: string
+      status:
         type: string
       updatedTime:
         description: 更新时间
@@ -955,6 +1047,35 @@ paths:
       summary: 授权登录
       tags:
       - Base
+  /fast/deleteFast/:id:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: ' '
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                ' msg':
+                  type: string
+                data:
+                  type: boolean
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 删除禁食
+      tags:
+      - Fast
   /fast/deleteFastCate/:id:
     delete:
       consumes:
@@ -1003,13 +1124,69 @@ paths:
                   - properties:
                       list:
                         items:
-                          $ref: '#/definitions/system.SysHealthNews'
+                          $ref: '#/definitions/system.SysFastCate'
                         type: array
                     type: object
               type: object
       security:
       - ApiKeyAuth: []
       summary: 获取禁食分类列表
+      tags:
+      - Fast
+  /fast/fastList:
+    post:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  allOf:
+                  - $ref: '#/definitions/response.PageResult'
+                  - properties:
+                      list:
+                        items:
+                          $ref: '#/definitions/system.SysFast'
+                        type: array
+                    type: object
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 获取禁食列表
+      tags:
+      - Fast
+  /fast/insertFast:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: ' '
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/request.InsertFastReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 添加禁食
       tags:
       - Fast
   /fast/insertFastCate:
@@ -1038,6 +1215,36 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: 添加禁食分类
+      tags:
+      - Fast
+  /fast/updateFast:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: ' '
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/request.UpdateFastReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                ' msg':
+                  type: string
+                data:
+                  type: boolean
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 更新禁食
       tags:
       - Fast
   /fast/updateFastCate:
