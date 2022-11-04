@@ -49,7 +49,7 @@ COPY . .
 # go generate 编译前自动执行代码
 # go env 查看go的环境变量
 # go build -o server . 打包项目生成文件名为server的二进制文件
-RUN go generate && go env && go build -o server .
+RUN go build -o server .
 
 # ==================================================== 以下为多阶段构建 ==========================================================
 

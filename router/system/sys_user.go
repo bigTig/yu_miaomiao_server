@@ -14,7 +14,7 @@ func (u *UserRouter) InitUserRouter(Router *gin.RouterGroup) {
 	{
 		userRouter.PUT("setUserInfo", baseApi.SetUserInfo)        // 设置用户信息
 		userRouter.GET("getUserInfo", baseApi.GetUserInfo)        // 获取用户信息
-		userRouter.GET("logout", baseApi.Logout)                  // 退出登录
+		userRouter.POST("logout", baseApi.Logout)                 // 退出登录
 		userRouter.POST("changePassword", baseApi.ChangePassword) // 修改密码
 	}
 }
