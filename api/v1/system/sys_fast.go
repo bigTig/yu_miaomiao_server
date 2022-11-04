@@ -166,6 +166,28 @@ func (f *FastApi) FastList(c *gin.Context) {
 	}, "获取成功", c)
 }
 
+// FastDetailById
+// @Tags      Fast
+// @Summary   根据id获取禁食详情
+// @Security  ApiKeyAuth
+// @accept    application/json
+// @Produce   application/json
+// @Param     id  query string true  " "
+// @Success   200  {object}  response.Response{data=system.SysFast} ""
+// @Router    /fast/fastDetailById [get]
+func (f *FastApi) FastDetailById(c *gin.Context) {
+	id := c.Query("id")
+	detail, err := fastService.FastDetailById(id)
+
+	if err != nil {
+		global.GvaLog.Error("获取失败!", zap.Error(err))
+		response.FailWithInternalServerError(err.Error()+",获取失败", c)
+		return
+	}
+
+	response.OkWithDetailed(detail, "获取成功", c)
+}
+
 // InsertFast
 // @Tags      Fast
 // @Summary   添加禁食

@@ -1133,6 +1133,33 @@ paths:
       summary: 获取禁食分类列表
       tags:
       - Fast
+  /fast/fastDetailById:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: ' '
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/system.SysFast'
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 根据id获取禁食详情
+      tags:
+      - Fast
   /fast/fastList:
     post:
       consumes:

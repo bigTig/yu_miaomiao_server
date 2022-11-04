@@ -6,6 +6,7 @@ import (
 	"yuyu/global"
 	"yuyu/model/system"
 	systemReq "yuyu/model/system/request"
+	systemRes "yuyu/model/system/response"
 	"yuyu/utils"
 )
 
@@ -109,6 +110,43 @@ func (fastCate *FastService) FastList(req *systemReq.FastListReq) (list interfac
 	err = db.Limit(limit).Offset(offset).Order("created_time desc").Where("status = ? AND cate_id = ?", "ENABLE", req.CateId).Find(&fast).Error
 
 	return fast, total, err
+}
+
+// FastDetailById
+//@author: kaifengli
+//@function: BrandList
+//@description: 根据id获取禁食详情
+//@param: id string
+//@return: fast *system.SysFast, err error
+func (fastCate *FastService) FastDetailById(id string) (*systemRes.FastDetailRes, error) {
+	var detail systemRes.FastDetailRes
+	var fast system.SysFast
+	err := global.GvaDb.Where("id = ?", id).First(&fast).Error
+	if err != nil {
+		global.GvaLog.Error("该记录不存在")
+		return &detail, errors.New("该记录不存在")
+	}
+
+	var cate system.SysFastCate
+	err = global.GvaDb.Where("id = ?", fast.CateId).Find(&cate).Error
+	if err != nil {
+		global.GvaLog.Error("该分类不存在")
+		return &detail, errors.New("该分类不存在")
+	}
+
+	detail.CateName = cate.Name
+	detail.CateId = cate.ID
+	detail.Name = fast.Name
+	detail.Status = fast.Status
+	detail.CarDog = fast.CarDog
+	detail.CanEat = fast.CanEat
+	detail.Content = fast.Content
+	detail.ID = fast.ID
+	detail.Icon = fast.Icon
+	detail.UpdatedTime = fast.UpdatedTime
+	detail.CreatedTime = fast.CreatedTime
+
+	return &detail, err
 }
 
 // InsertFast

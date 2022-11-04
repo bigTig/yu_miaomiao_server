@@ -19,6 +19,7 @@ func (f *FastRouter) InitFastRouter(Router *gin.RouterGroup) (R gin.IRouter) {
 		fastRouter.POST("insertFast", fastApi.InsertFast)               // 添加禁食
 		fastRouter.PUT("updateFast", fastApi.UpdateFast)                // 更新禁食
 		fastRouter.DELETE("deleteFast/:id", fastApi.DeleteFast)         // 删除禁食
+		fastRouter.GET("fastDetailById", fastApi.FastDetailById)        // 根据id获取禁食详情
 	}
 
 	return fastRouter
