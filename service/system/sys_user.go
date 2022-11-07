@@ -129,22 +129,25 @@ func (userService *UserService) SetUserInfo(userInfo *systemReq.ChangeUserInfo) 
 		global.GvaLog.Error("该用户不存在")
 		return errors.New("该用户不存在")
 	}
-	if !errors.Is(global.GvaDb.Where("name = ?", userInfo.Name).First(&system.SysUser{}).Error, gorm.ErrRecordNotFound) {
-		return errors.New("存在重复name，请修改name")
-	}
+	//if !errors.Is(global.GvaDb.First(&system.SysUser{}).Error, gorm.ErrRecordNotFound) {
+	//	return errors.New("存在重复name，请修改name")
+	//}
 
-	user.ID = userInfo.ID
-	user.UUID = userInfo.UUID
 	user.Name = userInfo.Name
 	user.UpdatedTime = utils.SetUpdatedTime()
 	user.Mobile = userInfo.Mobile
 	user.NickName = userInfo.NickName
-	user.Country = userInfo.Country
 	user.Province = userInfo.Province
+	user.IdCard = userInfo.IdCard
+	user.BirthDay = userInfo.BirthDay
+	user.ProvinceCode = userInfo.ProvinceCode
 	user.City = userInfo.City
+	user.CityCode = userInfo.CityCode
 	user.District = userInfo.District
+	user.DistrictCode = userInfo.DistrictCode
 	user.Sex = userInfo.Sex
-	user.Avatar = userInfo.Avatar
+	user.Address = userInfo.Address
+	user.Detailed = userInfo.Detailed
 
 	return global.GvaDb.Where("id = ?", userInfo.ID).Updates(&user).Error
 }
@@ -156,13 +159,13 @@ func (userService *UserService) SetUserInfo(userInfo *systemReq.ChangeUserInfo) 
 //@param: uuid uuid.UUID
 //@return: err error, userInter *model.SysUser
 func (userService *UserService) GetUserInfo(uuid uuid.UUID) (userInfo *system.SysUser, err error) {
-	var user system.SysUser
 
-	err = global.GvaDb.Where("uuid = ?", uuid).First(&user).Error
+	err = global.GvaDb.Where("uuid = ?", uuid).First(&userInfo).Error
 	if err != nil {
 		global.GvaLog.Error("该用户不存在")
 		return userInfo, errors.New("该用户不存在")
 	}
+	userInfo.Address = userInfo.Province + userInfo.City + userInfo.District
 
-	return &user, err
+	return userInfo, err
 }

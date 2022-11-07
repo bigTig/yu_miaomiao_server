@@ -6,6 +6,7 @@ var (
 	UpdateAdvertVerify    = Rules{"Id": {NotEmpty()}, "Name": {NotEmpty()}, "Photo": {NotEmpty()}, "Position": {NotEmpty()}, "Sort": {NotEmpty()}, "Type": {NotEmpty()}, "Status": {NotEmpty()}}
 	LoginVerify           = Rules{"Username": {NotEmpty()}, "Password": {NotEmpty()}, "Captcha": {NotEmpty()}, "CaptchaId": {NotEmpty()}}
 	ChangePasswordVerify  = Rules{"Password": {NotEmpty()}, "ConfirmPassword": {NotEmpty()}}
+	ChangeUserInfoVerify  = Rules{"Id": {NotEmpty()}, "UUID": {NotEmpty()}, "Name": {NotEmpty()}, "NickName": {NotEmpty()}, "Mobile": {NotEmpty()}, "Sex": {NotEmpty()}, "IdCard": {NotEmpty()}, "BirthDay": {NotEmpty()}, "Province": {NotEmpty()}, "ProvinceCode": {NotEmpty()}, "City": {NotEmpty()}, "CityCode": {NotEmpty()}, "District": {NotEmpty()}, "DistrictCode": {NotEmpty()}, "Address": {NotEmpty()}, "Detailed": {NotEmpty()}}
 	WxLoginVerify         = Rules{"Code": {NotEmpty()}, "Iv": {NotEmpty()}, "AppId": {NotEmpty()}, "EncryptedData": {NotEmpty()}}
 	InsertCateVerify      = Rules{"Name": {NotEmpty()}, "Icon": {NotEmpty()}, "Content": {NotEmpty()}, "Sort": {Ge("0")}, "Status": {NotEmpty()}, "Remarks": {NotEmpty()}}
 	UpdateCateVerify      = Rules{"Id": {NotEmpty()}, "Name": {NotEmpty()}, "Icon": {NotEmpty()}, "Content": {NotEmpty()}, "Sort": {Ge("0")}, "Status": {NotEmpty()}, "Remarks": {NotEmpty()}}

@@ -1026,6 +1026,17 @@ const docTemplate = `{
                     "Fast"
                 ],
                 "summary": "获取禁食列表",
+                "parameters": [
+                    {
+                        "description": " ",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.FastListReq"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -1775,29 +1786,36 @@ const docTemplate = `{
         "request.ChangeUserInfo": {
             "type": "object",
             "properties": {
-                "Mobile": {
-                    "description": "用户手机号",
+                "address": {
                     "type": "string"
                 },
-                "avatar": {
-                    "description": "用户头像",
+                "birthDay": {
                     "type": "string"
                 },
                 "city": {
                     "type": "string"
                 },
-                "country": {
+                "cityCode": {
+                    "type": "string"
+                },
+                "detailed": {
                     "type": "string"
                 },
                 "district": {
                     "type": "string"
                 },
-                "enable": {
-                    "description": "用户是否被冻结 1正常 2冻结",
-                    "type": "integer"
+                "districtCode": {
+                    "type": "string"
                 },
                 "id": {
                     "type": "integer"
+                },
+                "idCard": {
+                    "type": "string"
+                },
+                "mobile": {
+                    "description": "用户手机号",
+                    "type": "string"
                 },
                 "name": {
                     "description": "真实姓名",
@@ -1807,10 +1825,10 @@ const docTemplate = `{
                     "description": "用户昵称",
                     "type": "string"
                 },
-                "points": {
-                    "type": "number"
-                },
                 "province": {
+                    "type": "string"
+                },
+                "provinceCode": {
                     "type": "string"
                 },
                 "sex": {
@@ -1819,6 +1837,35 @@ const docTemplate = `{
                 "uuid": {
                     "description": "用户UUID",
                     "type": "string"
+                }
+            }
+        },
+        "request.FastListReq": {
+            "type": "object",
+            "properties": {
+                "canEat": {
+                    "description": "程度 0 禁食 1 慎食 2 可食",
+                    "type": "integer"
+                },
+                "carDog": {
+                    "description": "分类 0 猫 1 狗",
+                    "type": "integer"
+                },
+                "cateId": {
+                    "description": "类目id",
+                    "type": "integer"
+                },
+                "keyword": {
+                    "description": "关键字",
+                    "type": "string"
+                },
+                "page": {
+                    "description": "页码",
+                    "type": "integer"
+                },
+                "pageSize": {
+                    "description": "每页大小",
+                    "type": "integer"
                 }
             }
         },
@@ -2553,15 +2600,21 @@ const docTemplate = `{
         "system.SysUser": {
             "type": "object",
             "properties": {
-                "Mobile": {
-                    "description": "用户手机号",
+                "address": {
                     "type": "string"
                 },
                 "avatar": {
                     "description": "用户头像",
                     "type": "string"
                 },
+                "birthDay": {
+                    "description": "出生日期",
+                    "type": "string"
+                },
                 "city": {
+                    "type": "string"
+                },
+                "cityCode": {
                     "type": "string"
                 },
                 "country": {
@@ -2575,7 +2628,13 @@ const docTemplate = `{
                     "description": "删除时间",
                     "type": "string"
                 },
+                "detailed": {
+                    "type": "string"
+                },
                 "district": {
+                    "type": "string"
+                },
+                "districtCode": {
                     "type": "string"
                 },
                 "enable": {
@@ -2585,6 +2644,14 @@ const docTemplate = `{
                 "id": {
                     "description": "主键ID",
                     "type": "integer"
+                },
+                "idCard": {
+                    "description": "身份证号码",
+                    "type": "string"
+                },
+                "mobile": {
+                    "description": "用户手机号",
+                    "type": "string"
                 },
                 "name": {
                     "description": "真实姓名",
@@ -2601,6 +2668,9 @@ const docTemplate = `{
                     "type": "number"
                 },
                 "province": {
+                    "type": "string"
+                },
+                "provinceCode": {
                     "type": "string"
                 },
                 "sex": {

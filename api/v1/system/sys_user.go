@@ -131,7 +131,7 @@ func (b *BaseApi) SetUserInfo(c *gin.Context) {
 		response.FailWithBadRequest(err.Error()+"json格式", c)
 		return
 	}
-	err = utils.Verify(user, utils.IdVerify)
+	err = utils.Verify(user, utils.ChangeUserInfoVerify)
 	if err != nil {
 		global.GvaLog.Error(err.Error(), zap.Error(err))
 		response.FailWithBadRequest(err.Error(), c)

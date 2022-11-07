@@ -16,6 +16,7 @@ type UpdateFastCateReq struct {
 type FastListReq struct {
 	request.PageInfo
 	CateId uint `json:"cateId"` // 类目id
+	CanEat uint `json:"canEat"` // 程度 0 禁食 1 慎食 2 可食
 	CarDog uint `json:"carDog"` // 分类 0 猫 1 狗
 }
 

@@ -103,11 +103,11 @@ func (fastCate *FastService) FastList(req *systemReq.FastListReq) (list interfac
 	limit := req.PageSize
 	offset := req.PageSize * (req.Page - 1)
 	db := global.GvaDb.Model(&system.SysFast{})
-	err = db.Count(&total).Error
+	//err = db.Count(&total).Error
 	var fast []system.SysFast
 
 	err = global.GvaDb.Find(&fast).Error
-	err = db.Limit(limit).Offset(offset).Order("created_time desc").Where("status = ? AND cate_id = ?", "ENABLE", req.CateId).Find(&fast).Error
+	err = db.Limit(limit).Offset(offset).Order("created_time desc").Where("status = ? AND cate_id = ? AND can_eat = ?", "ENABLE", req.CateId, req.CanEat).Find(&fast).Count(&total).Error
 
 	return fast, total, err
 }

@@ -135,6 +135,7 @@ func (f *FastApi) DeleteFastCate(c *gin.Context) {
 // @Security  ApiKeyAuth
 // @accept    application/json
 // @Produce   application/json
+// @Param     data  body      systemReq.FastListReq true  " "
 // @Success   200  {object}  response.Response{data=response.PageResult{list=[]system.SysFast,}} ""
 // @Router    /fast/fastList [post]
 func (f *FastApi) FastList(c *gin.Context) {
