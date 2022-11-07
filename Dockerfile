@@ -38,18 +38,23 @@
 #CMD ["./dist/app"]
 
 # 声明镜像来源为golang:alpine
-FROM golang:alpine
+#FROM golang:alpine
+#
+#ENV GO111MODULE=on \
+#    CGO_ENABLED=0 \
+#    GOOS=linux \
+#    GOARCH=amd64
 
 # 声明工作目录
-WORKDIR /go/src/yu-miaomiao-service
+#WORKDIR /go/src/yu-miaomiao-service
 
 # 拷贝整个server项目到工作目录
-COPY . .
+#COPY . .
 
 # go generate 编译前自动执行代码
 # go env 查看go的环境变量
 # go build -o server . 打包项目生成文件名为server的二进制文件
-RUN go build -o server .
+# RUN go build -o server .
 
 # ==================================================== 以下为多阶段构建 ==========================================================
 
