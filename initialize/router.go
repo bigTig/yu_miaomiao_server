@@ -34,6 +34,7 @@ func Routers() *gin.Engine {
 		systemRouter.InitBaseAuthRouter(PrivateGroup)   // 需要权限的基础接口
 		systemRouter.InitHealthNewsRouter(PrivateGroup) // 新闻资讯相关接口
 		systemRouter.InitFastRouter(PrivateGroup)       // 禁食相关接口
+		systemRouter.InitAddressRouter(PrivateGroup)    // 收货地址接口
 	}
 
 	global.GvaLog.Info("router register success")

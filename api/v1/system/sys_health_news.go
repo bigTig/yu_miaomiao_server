@@ -124,7 +124,7 @@ func (h *HealthNewsApi) UpdateHealthNew(c *gin.Context) {
 // @accept    application/json
 // @Produce   application/json
 // @Param     id  path string true  " "
-// @Success   200  {object}  response.Response{data=bool, msg=string} ""
+// @Success   200  {object}  response.Response{data=bool} ""
 // @Router    /health/deleteHealthNew/:id [delete]
 func (h *HealthNewsApi) DeleteHealthNew(c *gin.Context) {
 	id := c.Param("id")
@@ -152,7 +152,7 @@ func (h *HealthNewsApi) DeleteHealthNew(c *gin.Context) {
 // @Produce   application/json
 // @Param     id  query string true  " "
 // @Success   200  {object}  response.Response{data=system.SysHealthNews, msg=string} ""
-// @Router    /health/HealthNewDetail [get]
+// @Router    /health/healthNewDetail [get]
 func (h *HealthNewsApi) HealthNewDetail(c *gin.Context) {
 	id := c.Query("id")
 	if id == "" {

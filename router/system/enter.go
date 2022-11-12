@@ -6,4 +6,5 @@ type RouterGroup struct {
 	JwtRouter
 	HealthNewsRouter
 	FastRouter
+	AddressRouter
 }

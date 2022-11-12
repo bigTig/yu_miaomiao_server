@@ -68,6 +68,37 @@ definitions:
         description: 每页大小
         type: integer
     type: object
+  request.InsertAddressParams:
+    properties:
+      address:
+        type: string
+      city:
+        type: string
+      cityCode:
+        type: string
+      detailed:
+        type: string
+      district:
+        type: string
+      districtCode:
+        type: string
+      isDefault:
+        type: integer
+      latitude:
+        type: number
+      longitude:
+        type: number
+      mobile:
+        type: string
+      name:
+        type: string
+      province:
+        type: string
+      provinceCode:
+        type: string
+      receiveAddr:
+        type: string
+    type: object
   request.InsertAdvert:
     properties:
       action:
@@ -207,6 +238,42 @@ definitions:
       pageSize:
         description: 每页大小
         type: integer
+    type: object
+  request.UpdateAddressParams:
+    properties:
+      address:
+        type: string
+      city:
+        type: string
+      cityCode:
+        type: string
+      detailed:
+        type: string
+      district:
+        type: string
+      districtCode:
+        type: string
+      id:
+        type: integer
+      isDefault:
+        type: integer
+      latitude:
+        type: number
+      longitude:
+        type: number
+      mobile:
+        type: string
+      name:
+        type: string
+      province:
+        type: string
+      provinceCode:
+        type: string
+      receiveAddr:
+        type: string
+      uuid:
+        description: 用户UUID
+        type: string
     type: object
   request.UpdateAdvert:
     properties:
@@ -408,6 +475,54 @@ definitions:
       user:
         $ref: '#/definitions/system.SysUser'
         description: 用户信息
+    type: object
+  system.SysAddress:
+    properties:
+      address:
+        type: string
+      city:
+        type: string
+      cityCode:
+        type: string
+      code:
+        type: string
+      createdTime:
+        description: 创建时间
+        type: string
+      deletedTime:
+        description: 删除时间
+        type: string
+      detailed:
+        type: string
+      district:
+        type: string
+      districtCode:
+        type: string
+      id:
+        description: 主键ID
+        type: integer
+      isDefault:
+        type: integer
+      latitude:
+        type: number
+      longitude:
+        type: number
+      mobile:
+        type: string
+      name:
+        type: string
+      province:
+        type: string
+      provinceCode:
+        type: string
+      receiveAddr:
+        type: string
+      updatedTime:
+        description: 更新时间
+        type: string
+      uuid:
+        description: 用户UUID
+        type: string
     type: object
   system.SysAdvert:
     properties:
@@ -647,6 +762,146 @@ info:
   title: Swagger Example API
   version: 0.0.1
 paths:
+  /address/addressDetailById:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: ' '
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/system.SysAddress'
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 获取收货地址详情
+      tags:
+      - Address
+  /address/addressList:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  allOf:
+                  - $ref: '#/definitions/response.PageResult'
+                  - properties:
+                      list:
+                        items:
+                          $ref: '#/definitions/system.SysAddress'
+                        type: array
+                    type: object
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 获取收货地址列表
+      tags:
+      - Address
+  /address/deleteAddress/:id:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: ' '
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  type: boolean
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 删除收货地址
+      tags:
+      - Address
+  /address/insertAddress:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: ' '
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/request.InsertAddressParams'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                msg:
+                  type: string
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 添加收货地址
+      tags:
+      - Address
+  /address/updateAddress:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: ' '
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/request.UpdateAddressParams'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                ' msg':
+                  type: string
+                data:
+                  type: boolean
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 更新收货地址
+      tags:
+      - Address
   /base/advertList:
     post:
       consumes:
@@ -1352,7 +1607,34 @@ paths:
       summary: 更新禁食分类
       tags:
       - Fast
-  /health/HealthNewDetail:
+  /health/deleteHealthNew/:id:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: ' '
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  type: boolean
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 删除新闻
+      tags:
+      - Health
+  /health/healthNewDetail:
     get:
       consumes:
       - application/json
@@ -1379,35 +1661,6 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: 获取新闻资讯详情
-      tags:
-      - Health
-  /health/deleteHealthNew/:id:
-    delete:
-      consumes:
-      - application/json
-      parameters:
-      - description: ' '
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/response.Response'
-            - properties:
-                ' msg':
-                  type: string
-                data:
-                  type: boolean
-              type: object
-      security:
-      - ApiKeyAuth: []
-      summary: 删除新闻
       tags:
       - Health
   /health/healthNewsList:

@@ -7,6 +7,7 @@ type ApiGroup struct {
 	JwtApi
 	HealthNewsApi
 	FastApi
+	AddressApi
 }
 
 var (
@@ -17,4 +18,5 @@ var (
 	brandService      = service.ServiceGroupApp.SystemServiceGroup.BrandService
 	healthNewsService = service.ServiceGroupApp.SystemServiceGroup.HealthNewsService
 	fastService       = service.ServiceGroupApp.SystemServiceGroup.FastService
+	addressService    = service.ServiceGroupApp.SystemServiceGroup.AddressService
 )

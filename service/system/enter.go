@@ -8,4 +8,5 @@ type ServiceGroup struct {
 	BrandService
 	HealthNewsService
 	FastService
+	AddressService
 }

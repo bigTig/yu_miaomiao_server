@@ -106,7 +106,6 @@ func (fastCate *FastService) FastList(req *systemReq.FastListReq) (list interfac
 	//err = db.Count(&total).Error
 	var fast []system.SysFast
 
-	err = global.GvaDb.Find(&fast).Error
 	err = db.Limit(limit).Offset(offset).Order("created_time desc").Where("status = ? AND cate_id = ? AND can_eat = ?", "ENABLE", req.CateId, req.CanEat).Find(&fast).Count(&total).Error
 
 	return fast, total, err
